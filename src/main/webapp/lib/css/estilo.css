@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+		dl.form {
+    		padding: 0.5em;
+  		}
+  		dt.label {
+    		float: left;
+    		clear: left;
+			width: 100px;
+			text-align: right;
+			font-weight: bold;
+			margin-right: 5px;
+		}
+		dd {
+			margin: 0 0 0 110px;
+			padding: 0 0 1px 0;
+		}
+.numerico{
+	text-align: right;
+}

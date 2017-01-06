@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{configManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Título ::..</ui:define>
+
+	<ui:define name="body">
+		<p:messages />
+		<!-- 
+			form
+		 -->		
+	</ui:define>
+
+</ui:composition>
+</html>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="f"  uri="http://java.sun.com/jsf/core"%>
+<%@ taglib prefix="h"  uri="http://java.sun.com/jsf/html"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link rel="stylesheet" type="text/css" href="../estilo.css" />
+	<title>..:: Cadastro exercícios ::..</title>
+</head>
+<body>
+<f:view>
+
+<f:subview id="menu">
+	<jsp:include page="../../menu.jsp" />
+</f:subview>
+
+<h:form>
+ <h:messages />
+ <h:panelGrid  id="painelExercicio"  columns="3">
+	<h:outputLabel id="lbid" value="id" for="id" />
+	<h:inputText id="id" value="#{exercicioAction.exercicio.id}" size="10" />
+	<h:message id="msgid" for="id" />
+
+ 	<h:outputLabel id="lbempresa" value="Empresa: " for="empresa" />
+	<h:selectOneMenu id="empresa" value="#{exercicioAction.exercicio.empresa.id}">
+		<f:selectItems value="#{exercicioAction.siEmpresa}"/>	
+	</h:selectOneMenu>
+	<h:message id="msgempresa" for="empresa" />
+
+	<h:outputLabel id="lbano" value="ano" for="ano" />
+	<h:inputText id="ano" value="#{exercicioAction.exercicio.ano}" size="10" />
+	<h:message id="msgano" for="ano" />
+
+	<h:outputLabel id="lbplanosContas" value="planosContas" for="planosContas" />
+	<h:inputText id="planosContas" value="#{exercicioAction.exercicio.planosContas.id}" size="100" />
+	<h:message id="msgplanosContas" for="planosContas" />
+
+</h:panelGrid>
+<h:commandLink id="novo" actionListener="#{exercicioAction.novo}" value="novo" /> | 
+<h:commandLink id="salvar" actionListener="#{exercicioAction.salvar}" value="salvar" /> | 
+<h:commandLink id="excluir" actionListener="#{exercicioAction.excluir}" value="excluir" /> |
+<h:commandLink id="listar" actionListener="#{exercicioAction.listar}" value="listar" /> |
+<h:dataTable id="tablela" var="item" value="#{exercicioAction.exercicioList}">
+	<h:column>
+		<f:facet name="header"><h:outputText value="id" /></f:facet>
+		<h:outputText value="#{item.id}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header"><h:outputText value="empresa" /></f:facet>
+		<h:outputText value="#{item.empresa}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header"><h:outputText value="ano" /></f:facet>
+		<h:outputText value="#{item.ano}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header"><h:outputText value="planosContas" /></f:facet>
+		<h:outputText value="#{item.planosContas}" />
+	</h:column>
+</h:dataTable>
+</h:form>
+</f:view>
+</body>
+</html>

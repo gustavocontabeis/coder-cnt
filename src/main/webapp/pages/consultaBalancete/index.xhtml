@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{configManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Título ::..</ui:define>
+
+	<ui:define name="body">
+		<p:messages />
+		<!-- 
+			form
+		 -->		
+	</ui:define>
+
+</ui:composition>
+</html>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="f"  uri="http://java.sun.com/jsf/core"%>
+<%@ taglib prefix="h"  uri="http://java.sun.com/jsf/html"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link rel="stylesheet" type="text/css" href="../estilo.css" />
+<title>..:: Consulta de Balancete Contábil ::..</title>
+<style type="text/css">
+</style>
+
+</head>
+<body>
+<f:view>
+<f:subview id="menu">
+	<jsp:include page="../../menu.jsp" />
+</f:subview>
+<br>
+<br>
+<div align="center">
+	<h:outputText value="Balançete de verificação" /><br>
+	<h:outputFormat value="#{consultarBalanceteAction.balancete.exercicio.empresa.razaoSocial}" /><br>
+	<h:outputFormat value="Período de {0, date} até {1, date}">
+		<f:param value="#{consultarBalanceteAction.balancete.de}" />
+		<f:param value="#{consultarBalanceteAction.balancete.ate}" />
+	</h:outputFormat>
+</div>
+<br>
+<h:dataTable value="#{consultarBalanceteAction.balancete.saldos}" var="obj" columnClasses="texto, texto, texto, numero, numero, numero, numero" rendered="#{not empty consultarBalanceteAction.balancete.saldos}" width="100%" styleClass="destacarLinha">
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Editar" />
+		</f:facet>
+		<h:outputLink value="../cadastroConta/index.jsf?id=#{obj.conta.id}">
+			<h:graphicImage url="../../img/editar.png" title="Editar conta" height="15px" />
+		</h:outputLink> 
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Estrutura" />
+		</f:facet>
+		<h:outputText value="#{obj.conta.estrutura}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Conta" />
+		</f:facet>
+		<h:outputText value="#{obj.conta.nome}" title="Cod.Conta: #{obj.conta.id}, nível: #{obj.conta.id}" styleClass="#{obj.conta.contaTipo}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Saldo Inicial" />
+		</f:facet>
+		<h:outputText value="#{obj.saldoInicialContabil}" styleClass="#{obj.conta.contaTipo} #{not obj.saldoInicialPositivo?'red':''}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Débito" />
+		</f:facet>
+		<h:outputText value="#{obj.debito}" styleClass="#{obj.conta.contaTipo}" >
+			<f:convertNumber minFractionDigits="2" groupingUsed="true"/>
+		</h:outputText>
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Credito" />
+		</f:facet>
+		<h:outputText value="#{obj.credito}" styleClass="#{obj.conta.contaTipo}">
+			<f:convertNumber minFractionDigits="2" groupingUsed="true"/>
+		</h:outputText>
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Saldo Final" />
+		</f:facet>
+		<h:outputText value="#{obj.saldoFinalContabil}" styleClass="#{obj.conta.contaTipo} #{not obj.saldoFinalPositivo?'red':''}"/>
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Editar" />
+		</f:facet>
+		<h:outputLink value="../consultaRazao/index.jsf?id=#{obj.conta.id}" rendered="#{obj.conta.contaTipo ne 'SINTETICA'}">
+			<h:graphicImage url="../../img/editar.png" title="Consultar Razão" height="15px" />
+		</h:outputLink> 
+	</h:column>
+</h:dataTable>
+
+</f:view>
+</body>
+</html>

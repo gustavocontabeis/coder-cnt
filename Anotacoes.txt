@@ -1,0 +1,5 @@
+Criar pool de conexoes com c3po
+Adicionar injeção de dependencia (spring)
+Criar seguranca
+Configurar apache
+Configurar git maven e jenkins na jm

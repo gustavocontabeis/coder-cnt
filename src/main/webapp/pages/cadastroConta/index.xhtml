@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{configManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Cadastro de Contas Contábeis ::..</ui:define>
+
+	<ui:define name="body">
+		<p:messages />
+		<h:form>
+			<p:panelGrid  id="painelConta" columns="3">
+			 
+				<p:outputLabel id="lbId" value="ID" for="id" />
+				<p:inputText id="id" value="#{contaAction.conta.id}" size="10" >
+					<f:convertNumber type="number"/>
+				</p:inputText>
+				<p:message id="msgId" for="id" />			
+			
+				<p:outputLabel id="lbEstrutura" value="ESTRUTURA" for="estrutura" />
+				<p:inputMask id="estrutura" value="#{contaAction.conta.estrutura}" size="20" mask="9.9.9.99.99.99.99"/>
+				<p:message id="msgEstrutura" for="estrutura" />
+			
+				<p:outputLabel id="lbNome" value="NOME" for="nome" />
+				<p:inputText id="nome" value="#{contaAction.conta.nome}" size="150" />
+				<p:message id="msgNome" for="nome" />
+			
+				<p:outputLabel id="lbDescricao" value="DESCRICAO" for="descricao" />
+				<p:inputText id="descricao" value="#{contaAction.conta.descricao}" size="150" />
+				<p:message id="msgDescricao" for="descricao" />
+			
+				<p:outputLabel id="lbContaTipo" value="CONTA TIPO" for="contaTipo" />
+				<p:selectOneMenu id="contaTipo" value="#{contaAction.selContaTipo}">
+					<f:selectItems value="#{contaAction.siContaTipo}"/>
+				</p:selectOneMenu>
+				<p:message id="msgContaTipo" for="contaTipo" />
+			
+				<p:outputLabel id="lbContaOrigem" value="CONTA ORIGEM" for="contaOrigem" />
+				<p:selectOneMenu id="contaOrigem" value="#{contaAction.selContaOrigem}">
+					<f:selectItems value="#{contaAction.siContaOrigem}"/>
+				</p:selectOneMenu>
+				<p:message id="msgContaOrigem" for="contaOrigem" />
+			
+				<p:outputLabel id="lbEmpresa" value="EMPRESA" for="empresa" />
+				<p:selectOneMenu id="empresa" value="#{contaAction.selEmpresa.id}">
+					<f:selectItems value="#{contaAction.siEmpresa}"/>
+				</p:selectOneMenu>
+				<p:message id="msgEmpresa" for="empresa" />
+			
+				<p:outputLabel id="lbExercicio" value="EXERCICIO" for="exercicio" />
+				<p:selectOneMenu id="exercicio" value="#{contaAction.selExercicio.id}">
+					<f:selectItems value="#{contaAction.siExercicio}"/>
+				</p:selectOneMenu>
+				<p:message id="msgExercicio" for="exercicio" />
+			
+				<p:outputLabel id="lbPlanoContas" value="PLANO CONTAS" for="planoContas" />
+				<p:selectOneMenu id="planoContas" value="#{contaAction.selPlanoContas.id}">
+					<f:selectItems value="#{contaAction.siPlanoContas}"/>
+				</p:selectOneMenu>
+				<p:message id="msgPlanoContas" for="planoContas" />
+			
+			</p:panelGrid>
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton id="novo" actionListener="#{contaAction.novo}" value="novo" />
+					<p:commandButton id="salvar" actionListener="#{contaAction.salvar}" value="salvar" update="@all" />
+					<p:commandButton id="excluir" actionListener="#{contaAction.excluir}" value="excluir" />
+					<p:commandButton id="listar" actionListener="#{contaAction.listar}" value="listar" update="tablela"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<br/>
+		<p:dataTable id="tablela" var="item" value="#{contaAction.contaList}"
+			emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
+			paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}">
+	<p:column>
+		<f:facet name="header"><h:outputText value="ID" /></f:facet>
+		<h:outputText value="#{item.id}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="ESTRUTURA" /></f:facet>
+		<h:outputText value="#{item.estrutura}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="NOME" /></f:facet>
+		<h:outputText value="#{item.nome}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="DESCRICAO" /></f:facet>
+		<h:outputText value="#{item.descricao}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="CONTA TIPO" /></f:facet>
+		<h:outputText value="#{item.contaTipo}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="CONTA ORIGEM" /></f:facet>
+		<h:outputText value="#{item.contaOrigem}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="EMPRESA" /></f:facet>
+		<h:outputText value="#{item.empresa.razaoSocial}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="EXERCICIO" /></f:facet>
+		<h:outputText value="#{item.exercicio.ano}" styleClass="#{item.contaTipo}" />
+	</p:column>
+	<p:column>
+		<f:facet name="header"><h:outputText value="PLANO CONTAS" /></f:facet>
+		<h:outputText value="#{item.planoContas.nome}" styleClass="#{item.contaTipo}" />
+	</p:column>
+</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

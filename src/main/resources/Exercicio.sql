@@ -1,0 +1,4 @@
+insert into EXERCICIO (ID_EXERCICIO, ID_EMPRESA, ANO, PLANOS_CONTAS, DT_INCLUSAO, id_pessoa_inclusao)values (1, 1, 2010, 1, TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
+insert into EXERCICIO (ID_EXERCICIO, ID_EMPRESA, ANO, PLANOS_CONTAS, DT_INCLUSAO, id_pessoa_inclusao)values (2, 1, 2011, 1, TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
+insert into EXERCICIO (ID_EXERCICIO, ID_EMPRESA, ANO, PLANOS_CONTAS, DT_INCLUSAO, id_pessoa_inclusao)values (3, 1, 2012, 1, TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
+insert into EXERCICIO (ID_EXERCICIO, ID_EMPRESA, ANO, PLANOS_CONTAS, DT_INCLUSAO, id_pessoa_inclusao)values (4, 2, 2010, 1, TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
