@@ -16,10 +16,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.ForeignKey;
+import javax.persistence.ForeignKey;
 
 import br.com.cnt.model.entity.BaseEntity;
 import br.com.cnt.model.utils.ContaUtil;
@@ -27,6 +28,12 @@ import br.com.cnt.model.utils.ContaUtil;
 
 @Entity
 @Table(name="CONTAS")
+@NamedQueries(value={
+		@NamedQuery(name="Conta-buscar", 
+				query="select obj from Conta obj "
+						+ "left join fetch obj.empresa e "
+						+ "left join fetch obj.planoContas pc "
+						+ "where obj.id = :id")})
 public class Conta extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
@@ -57,23 +64,14 @@ public class Conta extends BaseEntity {
  	@Column(name="CONTA_ORIGEM")
 	private ContaOrigem contaOrigem;
  	
- 	@Deprecated
- 	@ManyToOne(targetEntity=Empresa.class, fetch=LAZY) 
- 	@JoinColumn(name="ID_EMPRESA", nullable=true)
- 	@ForeignKey(name="FK_EMPRESA")
+ 	@ManyToOne(targetEntity=Empresa.class, fetch=LAZY, cascade={CascadeType.ALL}) 
+ 	@JoinColumn(name="ID_EMPRESA", nullable=true, foreignKey = @ForeignKey(name="FK_EMPRESA"))
  	private Empresa empresa;
  
- 	@Deprecated
- 	@ManyToOne(targetEntity=Exercicio.class, fetch=LAZY) 
- 	@JoinColumn(name="ID_EXERCICIO", nullable=true)
- 	@ForeignKey(name="FK_EXERCICIO")
- 	private Exercicio exercicio;
- 
- 	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.EAGER) 
- 	@JoinColumn(name="ID_PLANO_CONTAS", nullable=true)
- 	@ForeignKey(name="FK_PLANO_CONTAS")
+ 	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL}) 
+ 	@JoinColumn(name="ID_PLANO_CONTAS", nullable=true, foreignKey = @ForeignKey(name="FK_PLANO_CONTAS"))
  	private PlanoContas planoContas;
- 
+ 	
 	public Conta() {
 		super();
 	}
@@ -92,7 +90,6 @@ public class Conta extends BaseEntity {
 	public Conta(Empresa empresa, Exercicio exercicio, PlanoContas planoContas) {
 		super();
 		this.empresa = empresa;
-		this.exercicio = exercicio;
 		this.planoContas = planoContas;
 	}
 
@@ -126,12 +123,6 @@ public class Conta extends BaseEntity {
 	public void setEmpresa(Empresa empresa){
  		this.empresa = empresa;
 	}
-	public Exercicio getExercicio(){
- 		return this.exercicio;
-	}
-	public void setExercicio(Exercicio exercicio){
- 		this.exercicio = exercicio;
-	}
 	public ContaOrigem getContaOrigem(){
  		return this.contaOrigem;
 	}
@@ -146,16 +137,17 @@ public class Conta extends BaseEntity {
 	}
 	@Override
 	public String toString() {
-		return 
-		"Conta [id=" + id + 
-		", nome=" + nome + 
-		", estrutura=" + estrutura + 
-		", descricao=" + descricao + 
-		", contaTipo=" + (contaTipo!=null?contaTipo:"") + 
-		", contaOrigem=" + (contaOrigem!=null?contaOrigem:"") + 
-		", empresa=" + (empresa!=null?empresa:"") + 
-		", exercicio=" + (exercicio!=null?exercicio:"") + 
-		", planoContas=" + (planoContas!=null?planoContas:"") + "]";
+//		return 
+//		"Conta [id=" + id + 
+//		", nome=" + nome + 
+//		", estrutura=" + estrutura + 
+//		", descricao=" + descricao + 
+//		", contaTipo=" + (contaTipo!=null?contaTipo:"") + 
+//		", contaOrigem=" + (contaOrigem!=null?contaOrigem:"") + 
+//		", empresa=" + (empresa!=null?empresa:"") + 
+//		", exercicio=" + (exercicio!=null?exercicio:"") + 
+//		", planoContas=" + (planoContas!=null?planoContas:"") + "]";
+		return super.toString();
 	}
 	public String getEstrutura() {
 		return estrutura;

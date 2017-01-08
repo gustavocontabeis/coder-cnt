@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.hibernate.transform.ResultTransformer;
 
 import br.com.cnt.model.dao.BaseDAO;
+import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.entity.balanco.ContaTipo;
@@ -50,11 +51,6 @@ public class ContaDAO extends BaseDAO<Conta> {
 			 		param.put("planoContasId", conta.getPlanoContas().getId());
 				}
  				
-				if(conta.getExercicio() != null){
- 					hql += " or ex.id = :exercicioId";
- 			 		param.put("exercicioId", conta.getExercicio().getId());
- 				}
-				
 				if(conta.getEmpresa() != null){
  					hql += " or emp.id = :empresaId";
  			 		param.put("empresaId", conta.getEmpresa().getId());
@@ -86,8 +82,6 @@ public class ContaDAO extends BaseDAO<Conta> {
 				conta.setEmpresa(new Empresa((Long)tuple[7], (String)tuple[8]));
 				if(tuple[9]!=null)
 					conta.setPlanoContas(new PlanoContas((Long)tuple[9]) );
-				if(tuple[10]!=null)
-					conta.setExercicio(new Exercicio((Long)tuple[10]));
 				return conta;
 			}
 			@SuppressWarnings("rawtypes")
@@ -99,5 +93,22 @@ public class ContaDAO extends BaseDAO<Conta> {
 		
  		return query.list();
  	}
+ 	
+ 	@Override
+ 	public Conta buscar(Long id) throws DaoException {
+ 		Session session = getSession();
+ 		Query query = session.getNamedQuery("Conta-buscar");
+ 		query.setLong("id", id);
+ 		Conta singleResult = (Conta) query.getSingleResult();
+ 		session.close();
+ 		return singleResult;
+ 	}
+
+	public List<Conta> buscarTodos() {
+		Session session = getSession();
+		List list = session.createCriteria(Conta.class).list();
+		session.close();
+		return list;
+	}
 }
  

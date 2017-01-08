@@ -76,16 +76,4 @@ public class BaseManagedBean<T extends BaseEntity, D extends BaseDAO<T>> impleme
 		return "nome";
 	}
 	
-	protected void prepararEntidade(BaseEntity entity) {
-		if(entity!=null){
-			if(entity.getId()==null){
-				entity.setUsuarioInclusao(loginBean.getUsuario());
-				entity.setDtIclusao(new Date());
-			}else{
-				entity.setUsuarioAlteracao(loginBean.getUsuario());
-				entity.setDtAlteracao(new Date());
-			}
-		}
-	}
-
 }

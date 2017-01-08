@@ -1,7 +1,5 @@
 package br.com.cnt.web.jsf.managedbeans;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,54 +13,51 @@ import org.primefaces.model.SortOrder;
 import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.dao.balanco.EmpresaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
-import br.com.cnt.model.dao.usuarios.UsuarioDAO;
+import br.com.cnt.model.dao.balanco.PlanoContasDAO;
 import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
-import br.com.cnt.model.entity.usuarios.Usuario;
+import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.Filtro;
 
-@javax.inject.Named @javax.faces.view.ViewScoped
 //@ManagedBean @ViewScoped
-public class EmpresaManagedBean extends BaseManagedBean<Empresa, EmpresaDAO> {
+@javax.inject.Named @javax.faces.view.ViewScoped
+public class ExercicioManagedBean extends BaseManagedBean {
 
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Empresa empresa;
-	private List<Empresa> empresas;
-	
-	protected LazyDataModel<Empresa> model;
+	private Exercicio exercicio;
+	protected LazyDataModel<Exercicio> model;
 	protected Filtro filtro;
 	
-	@Inject
-	private EmpresaDAO empresaDAO;
-	@Inject
-	private UsuarioDAO usuarioDAO;
-	@Inject
-	private ExercicioDAO exercicioDAO;
+	@Inject private ExercicioDAO dao;
+	@Inject private EmpresaDAO empresaDAO;
+
+	private List<Empresa> empresas;
+	private List<PlanoContas> planosContas;
 
 	@PostConstruct
 	private void init() {
 		novo(null);
 		loadLazyModel();
-		empresas = getPopularComboEmpresa();
+		getPopularComboEmpresa();
 	}
 
 	private void loadLazyModel() {
-		model = new LazyDataModel<Empresa>() {
+		model = new LazyDataModel<Exercicio>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public List<Empresa> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-				filtro = new Filtro(Empresa.class, first, pageSize, sortField, sortOrder, filters);
-				setRowCount(empresaDAO.getQuantidade2(filtro));
-				return empresaDAO.buscar2(filtro);
+			public List<Exercicio> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+				filtro = new Filtro<Exercicio>(Exercicio.class, first, pageSize, sortField, sortOrder, filters);
+				setRowCount(dao.getQuantidade2(filtro));
+				return dao.buscar2(filtro);
 			}
-		    public Empresa getRowData(String rowKey) {
-		    	Empresa obj = new Empresa();
+		    public Exercicio getRowData(String rowKey) {
+		    	Exercicio obj = new Exercicio();
 		    	obj.setId(new Long(rowKey));
 		    	 try {
-					obj = empresaDAO.buscar(obj, new Long(rowKey));
+					obj = dao.buscar(obj, new Long(rowKey));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (DaoException e) {
@@ -70,24 +65,19 @@ public class EmpresaManagedBean extends BaseManagedBean<Empresa, EmpresaDAO> {
 				}
 		    	return obj;
 		    }
-		    public Object getRowKey(Empresa object) {
+		    public Object getRowKey(Exercicio object) {
 		    	return String.valueOf(object.getId());
 		    }
 		};
 	}
 	
 	public void novo(ActionEvent evt) {
-		empresa = new Empresa();
-		empresa.setExercicios(new ArrayList<Exercicio>());
-		empresa.setMatriz(new Empresa());
+		exercicio = new Exercicio();
 	}
 
 	public void salvar(ActionEvent evt) throws DaoException {
 		try {
-			if(empresa.getMatriz()!=null && empresa.getMatriz().getId()==null){
-				empresa.setMatriz(null);
-			}
-			empresaDAO.salvar(empresa);
+			dao.salvar(exercicio);
 			message(null, "Registro salvo com sucesso.");
 		} catch (Exception e) {
 			message(e);
@@ -97,7 +87,7 @@ public class EmpresaManagedBean extends BaseManagedBean<Empresa, EmpresaDAO> {
 
 	public void excluir(ActionEvent evt) throws DaoException {
 		try {
-			empresaDAO.excluir(empresa);
+			dao.excluir(exercicio);
 			novo(null);
 			message(null, "Registro excluído com sucesso.");
 		} catch (Exception e) {
@@ -105,33 +95,41 @@ public class EmpresaManagedBean extends BaseManagedBean<Empresa, EmpresaDAO> {
 		}
 	}
 
-	public Empresa getEmpresa() {
-		return empresa;
+	public Exercicio getExercicio() {
+		return exercicio;
 	}
 
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
+	public void setExercicio(Exercicio exercicio) {
+		this.exercicio = exercicio;
 	}
 
-	public LazyDataModel<Empresa> getModel() {
+	public LazyDataModel<Exercicio> getModel() {
 		return model;
 	}
 
-	public void setModel(LazyDataModel<Empresa> model) {
+	public void setModel(LazyDataModel<Exercicio> model) {
 		this.model = model;
 	}
 	
 	public List<Empresa> getPopularComboEmpresa() {
-		return empresaDAO.buscarTodos();
-	}
-
-	public List<Usuario> getPopularComboUsuario() {
-		return usuarioDAO.buscarTodos();
+		empresas = empresaDAO.buscarTodos();
+		return empresas;
 	}
 
 	public List<Empresa> getEmpresas() {
 		return empresas;
 	}
 
-}
+	public void setEmpresas(List<Empresa> empresas) {
+		this.empresas = empresas;
+	}
 
+	public List<PlanoContas> getPlanosContas() {
+		return planosContas;
+	}
+
+	public void setPlanosContas(List<PlanoContas> planosContas) {
+		this.planosContas = planosContas;
+	}
+	
+}

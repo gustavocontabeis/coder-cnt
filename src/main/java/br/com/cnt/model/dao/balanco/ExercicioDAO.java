@@ -30,5 +30,14 @@ public class ExercicioDAO extends BaseDAO<Exercicio> {
 		session.close();
 		return list;
 	}
+
+	public List<Exercicio> buscarExercicio(Empresa empresa) {
+ 		Session session = getSession();
+ 		Query query = session.createQuery("select obj from Exercicio obj where obj.empresa.id = :empresa");
+ 		query.setLong("empresa", empresa.getId());
+ 		List list = query.list();
+ 		session.close();
+ 		return list;
+	}
 }
  

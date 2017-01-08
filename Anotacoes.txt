@@ -3,3 +3,11 @@ Adicionar injeção de dependencia (spring)
 Criar seguranca
 Configurar apache
 Configurar git maven e jenkins na jm
+
+
+
+
+Ajustar o CDI e escopo
+nao utilizar os métodos getPopularCombo
+Ajustar O Campo ID com Columns
+Ajustar Combos 

@@ -1,8 +1,6 @@
 /* ::::::::::::::::::::::::::::::::::::::::::: */
 package br.com.cnt.model.entity.balanco;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import br.com.cnt.model.dao.BaseDAO;
 import br.com.cnt.model.entity.BaseEntity;
 
 @Entity
@@ -37,9 +34,8 @@ public class Exercicio extends BaseEntity {
  	@Column(name="ANO", length=10, nullable=false)
  	private Integer ano;
  
- 	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.EAGER) 
- 	@JoinColumn(name="PLANOS_CONTAS", nullable=false, foreignKey = @ForeignKey(name="FK_PLANOS_CONTAS"))
- 	private PlanoContas planosContas;
+ 	@Column(name="FECHADO", length=10, nullable=false)
+ 	private Boolean fechado;
  
  	public Exercicio() {
 		super();
@@ -56,12 +52,11 @@ public class Exercicio extends BaseEntity {
 		this.ano = ano;
 	}
  	
- 	public Exercicio(Long id, Empresa empresa, Integer ano, PlanoContas planosContas) {
+ 	public Exercicio(Long id, Empresa empresa, Integer ano) {
 		super();
 		this.id = id;
 		this.empresa = empresa;
 		this.ano = ano;
-		this.planosContas = planosContas;
 	}
  	
  	public Long getId(){
@@ -82,16 +77,16 @@ public class Exercicio extends BaseEntity {
 	public void setAno(Integer ano){
  		this.ano = ano;
 	}
-	public PlanoContas getPlanosContas(){
- 		return this.planosContas;
+	public Boolean getFechado() {
+		return fechado;
 	}
-	public void setPlanosContas(PlanoContas planosContas){
- 		this.planosContas = planosContas;
+	public void setFechado(Boolean fechado) {
+		this.fechado = fechado;
 	}
 
 	@Override
 	public String toString() {
-		return "Exercicio [id=" + id + ", empresa=" + empresa + ", ano=" + ano + ", planosContas=" + planosContas + "]";
+		return "Exercicio [id=" + id + ", empresa=" + empresa + ", ano=" + ano + "]";
 	}
 }
  

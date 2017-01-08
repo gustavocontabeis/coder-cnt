@@ -2,6 +2,8 @@ package br.com.cnt.model.dao.balanco;
 
 import java.util.List;
 
+import javax.inject.Named;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -10,6 +12,7 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 
+@Named
 public class PlanoContasDAO extends BaseDAO<PlanoContas> {
  	
 	private static final long serialVersionUID = 1L;
@@ -31,8 +34,6 @@ public class PlanoContasDAO extends BaseDAO<PlanoContas> {
  		String hql = "from Conta conta where ";
  		if(exercicio.getEmpresa()!=null)
  			hql += "or conta.empresa.id = :empresa ";
- 		if(exercicio.getPlanosContas()!=null)
- 			hql += "or conta.planoContas.id = :planoContas ";
  		if(exercicio.getId()!=null)
  			hql += "or conta.exercicio.id = :exercicio ";
  		
@@ -41,8 +42,6 @@ public class PlanoContasDAO extends BaseDAO<PlanoContas> {
  		
  		if(exercicio.getEmpresa()!=null)
  			query.setLong("empresa", exercicio.getEmpresa().getId());
- 		if(exercicio.getPlanosContas()!=null)
- 			query.setLong("planoContas", exercicio.getPlanosContas().getId());
  		if(exercicio.getId()!=null)
  			query.setLong("exercicio", exercicio.getId());
  		

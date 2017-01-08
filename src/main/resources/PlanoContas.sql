@@ -1,4 +1,4 @@
-insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME, DT_INCLUSAO, id_pessoa_inclusao) values (1, 'Plano de contas Comercio', TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
-insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME, DT_INCLUSAO, id_pessoa_inclusao) values (2, 'Plano de contas Industria', TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
-insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME, DT_INCLUSAO, id_pessoa_inclusao) values (3, 'Plano de contas Servicos', TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
-insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME, DT_INCLUSAO, id_pessoa_inclusao) values (4, 'Plano de contas Empresa X', TO_DATE ('31/12/2009', 'DD/MM/YYYY'), 1);
+insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME) values (1, 'Plano de contas Comercio');
+insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME) values (2, 'Plano de contas Industria');
+insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME) values (3, 'Plano de contas Servicos');
+insert into PLANO_CONTAS (ID_PLANO_CONTAS, NOME) values (4, 'Plano de contas Empresa X');

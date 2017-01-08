@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 
@@ -25,6 +23,7 @@ import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.entity.usuarios.Usuario;
+import br.com.cnt.model.utils.ContaUtil;
 import br.com.cnt.model.utils.Filtro;
 
 //@ManagedBean @ViewScoped
@@ -45,17 +44,14 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 	@Inject private UsuarioDAO usuarioDAO;
 
 	private List<Empresa> empresas;
+	private List<PlanoContas> planocontas;
 
 	@PostConstruct
 	private void init() {
-//		dao = new ContaDAO();
-//		empresaDAO = (new EmpresaDAO());
-//		exercicioDAO = (new ExercicioDAO());
-//		planoContasDAO = (new PlanoContasDAO());
-//		usuarioDAO = (new UsuarioDAO());
 		novo(null);
 		loadLazyModel();
 		empresas = getPopularComboEmpresa();
+		planocontas = getPopularComboPlanoContas();
 	}
 
 	private void loadLazyModel() {
@@ -74,11 +70,7 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 				Conta obj = new Conta();
 				obj.setId(new Long(rowKey));
 				try {
-					obj = dao.buscar(obj, new Long(rowKey));
-					if(obj.getEmpresa() == null)
-						obj.setEmpresa(new Empresa());
-					if(obj.getExercicio() == null)
-						obj.setExercicio(new Exercicio());
+					obj = dao.buscar(new Long(rowKey));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (DaoException e) {
@@ -95,25 +87,11 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 
 	public void novo(ActionEvent evt) {
 		conta = new Conta();
-		conta.setEmpresa(new Empresa());
-		conta.setExercicio(new Exercicio());
-		conta.setPlanoContas(new PlanoContas());
-		conta.setUsuarioAlteracao(new Usuario());
-		conta.setUsuarioInclusao(new Usuario());
 	}
 
 	public void salvar(ActionEvent evt) throws DaoException {
 		try {
-			prepararEntidade(conta);
-			if(conta.getEmpresa().getId()==null){
-				conta.setEmpresa(null);
-			}
-			if(conta.getPlanoContas().getId()==null){
-				conta.setPlanoContas(null);
-			}
-			if(conta.getExercicio().getId()==null){
-				conta.setExercicio(null);
-			}
+			conta.setNivel(ContaUtil.retornarNivel(conta));
 			dao.salvar(conta);
 			message(null, "Registro salvo com sucesso.");
 		} catch (Exception e) {
@@ -159,12 +137,17 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 		return empresaDAO.buscarTodos();
 	}
 
-	public List<Exercicio> getPopularComboExercicio() {
-		return exercicioDAO.buscarTodos();
+	public List<PlanoContas> getPopularComboPlanoContas() {
+		planocontas = planoContasDAO.buscarTodos();
+		return planocontas;
 	}
 
-	public List<PlanoContas> getPopularComboPlanoContas() {
-		return planoContasDAO.buscarTodos();
+	public List<PlanoContas> getPlanocontas() {
+		return planocontas;
+	}
+
+	public void setPlanocontas(List<PlanoContas> planocontas) {
+		this.planocontas = planocontas;
 	}
 
 	public List<Usuario> getPopularComboUsuario() {
@@ -174,4 +157,5 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 	public List<Empresa> getEmpresas() {
 		return empresas;
 	}
+
 }

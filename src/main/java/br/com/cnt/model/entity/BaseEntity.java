@@ -28,53 +28,6 @@ public abstract class BaseEntity implements Serializable {
 	public abstract Long getId();
 	public abstract void setId(Long id);
 	
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="dt_inclusao", nullable=false)
-	private Date dtIclusao;
-	
-	@Version
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="dt_alteracao", nullable=true)
-	private Date dtAlteracao;
-	
-	@NotNull
-	@OneToOne(cascade={CascadeType.DETACH}, fetch=FetchType.EAGER)
-	@JoinColumn(name="id_pessoa_inclusao")
-	private Usuario usuarioInclusao;
-	
-	@OneToOne(cascade={CascadeType.DETACH}, fetch=FetchType.LAZY)
-	@JoinColumn(name="id_pessoa_alteracao", nullable=true)
-	private Usuario usuarioAlteracao;
-	
-	public Date getDtIclusao() {
-		return dtIclusao;
-	}
-	public void setDtIclusao(Date dtIclusao) {
-		this.dtIclusao = dtIclusao;
-	}
-	
-	
-	public Date getDtAlteracao() {
-		return dtAlteracao;
-	}
-	public void setDtAlteracao(Date dtAlteracao) {
-		this.dtAlteracao = dtAlteracao;
-	}
-	
-	public Usuario getUsuarioInclusao() {
-		return usuarioInclusao;
-	}
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
-	}
-	
-	public Usuario getUsuarioAlteracao() {
-		return usuarioAlteracao;
-	}
-	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
-		this.usuarioAlteracao = usuarioAlteracao;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,6 +36,7 @@ public abstract class BaseEntity implements Serializable {
 		result = prime * result + ( getId()!=null ? getId().intValue():1 );
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		

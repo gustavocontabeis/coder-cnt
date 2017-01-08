@@ -16,8 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.ForeignKey;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.ForeignKey;
 
 import br.com.cnt.model.entity.BaseEntity;
 
@@ -32,23 +33,21 @@ public class Lancamento extends BaseEntity {
 	@SequenceGenerator(name="SEQ_LANCAMENTO", sequenceName="SEQ_LANCAMENTO", initialValue=100) 
  	@Column(name="ID_LANCAMENTO", length=10,  nullable=false)
  	private Long id;
- 
+ 	
+ 	@Temporal(TemporalType.DATE)
  	@Column(name="DATA", length=10,  nullable=false)
  	private Date date;
  
  	@ManyToOne(targetEntity=Exercicio.class, fetch=LAZY) 
- 	@JoinColumn(name="EXERCICIO", nullable=false)
- 	@ForeignKey(name="FK_LANCAMENTO_EXERCICIO")
+ 	@JoinColumn(name="EXERCICIO", nullable=false, foreignKey = @ForeignKey(name="FK_LANCAMENTO_EXERCICIO"))
  	private Exercicio exercicio;
  
  	@ManyToOne(targetEntity=Conta.class, fetch=LAZY) 
- 	@JoinColumn(name="DEBITO", nullable=true)
- 	@ForeignKey(name="FK_DEBITO")
+ 	@JoinColumn(name="DEBITO", nullable=true, foreignKey = @ForeignKey(name="FK_DEBITO"))
  	private Conta debito;
  
  	@ManyToOne(targetEntity=Conta.class, fetch=LAZY) 
- 	@JoinColumn(name="CREDITO", nullable=true)
- 	@ForeignKey(name="FK_CREDITO")
+ 	@JoinColumn(name="CREDITO", nullable=true, foreignKey = @ForeignKey(name="FK_CREDITO"))
  	private Conta credito;
  
  	@Column(name="VALOR", length=10, precision=2,  nullable=false)
@@ -58,8 +57,7 @@ public class Lancamento extends BaseEntity {
  	private String historico;
  
  	@ManyToOne(targetEntity=Lancamento.class, fetch=LAZY) 
- 	@JoinColumn(name="LANCAMENTO_PRINCIPAL", nullable=true)
- 	@ForeignKey(name="FK_LANCAMENTO_PRINCIPAL")
+ 	@JoinColumn(name="LANCAMENTO_PRINCIPAL", nullable=true, foreignKey =@ForeignKey(name="FK_LANCAMENTO_PRINCIPAL"))
  	private Lancamento lancamentoPrincipal;
  
  	@Enumerated(EnumType.STRING)
@@ -87,8 +85,6 @@ public class Lancamento extends BaseEntity {
 		this.credito = new Conta(creditoId, creditoNome);
 		this.valor = valor;
 	}
-
-
 
 	public Long getId(){
  		return this.id;

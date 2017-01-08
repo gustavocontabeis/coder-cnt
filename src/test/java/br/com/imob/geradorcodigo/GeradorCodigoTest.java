@@ -40,7 +40,7 @@ public class GeradorCodigoTest{
 		aplicacao = new Aplicacao();
 		aplicacao.setPackageApp("br.com.cnt");
 		aplicacao.setWebAppPath("/home/caixa/coder/projects/coder-cnt/src/main/webapp");//caixa
-		objeto = new br.com.cnt.model.entity.balanco.Empresa();
+		objeto = new br.com.cnt.model.entity.balanco.Lancamento();
 	}
 	
 	@Test //@Ignore

@@ -47,16 +47,12 @@ public class BaseDAO<T extends BaseEntity> implements Serializable {
     }
 
     public void salvar(T obj) throws DaoException {
-    	if (obj.getId() == null) 
-        	obj.setDtIclusao(new Date());
         validate(obj);
         Session session = getSession();
         session.beginTransaction();
         if (obj.getId() == null) {
         	session.save(obj);
         } else {
-        	if(obj.getUsuarioAlteracao()==null)
-        		throw new RuntimeException(obj.getClass().getSimpleName()+": {id: "+obj.getId()+"} usuário de alteração é obrigatório para esta operação.");
             session.update(obj);
         }
         session.getTransaction().commit();

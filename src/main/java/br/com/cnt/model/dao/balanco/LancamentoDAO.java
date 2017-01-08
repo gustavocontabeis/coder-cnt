@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.cnt.model.dao.BaseDAO;
+import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
@@ -449,5 +450,11 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		session.close();
 		return (Lancamento) uniqueResult;
 	}
+
+	public List<Lancamento> buscarTodos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
  
