@@ -2,54 +2,54 @@ package br.com.cnt.web.jsf.managedbeans;
 
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
 import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.dao.balanco.BalanceteDAO;
+import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
 import br.com.cnt.model.dao.balanco.LancamentoDAO;
+import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.Balancete;
 import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
 import br.com.cnt.model.utils.ConstantesComuns;
 
 //@ManagedBean @ViewScoped
-@javax.inject.Named @javax.enterprise.context.RequestScoped //@javax.faces.view.ViewScoped
-public class ConsultarBalanceteAction {
+@javax.inject.Named @javax.faces.view.ViewScoped //@javax.enterprise.context.RequestScoped
+public class BalanceteManagedBean extends BaseManagedBean<Conta, ContaDAO>{
 	
 	private Balancete balancete;
 	
 	//@Inject 
-	BalanceteDAO dao;
+	private BalanceteDAO dao;
 	
-//	private IndexAction indexAction;
-	
-	
-	
-	public ConsultarBalanceteAction() {
-		super();
-		System.out.println("ConsultarBalanceteAction");
-		HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-		Exercicio exercicio = (Exercicio) sessao.getAttribute(ConstantesComuns.EXERCICIO_SESSAO);
-		if(exercicio == null){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Selecione uma empresa para trabalhar."));
-		}else{
-			exibirBalancete(null);
+	@PostConstruct
+	private void init() {
+		System.out.println("xxxxxxxxxxxxxx");
+		if(loginBean != null){
+			Exercicio exercicio = loginBean.getExercicio();
+			if(exercicio == null){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Selecione uma empresa para trabalhar."));
+			}else{
+				exibirBalancete(null);
+			}
 		}
 	}
 	
 	public void exibirBalancete(ActionEvent evt){
 
-		HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-		Exercicio exercicio = (Exercicio) sessao.getAttribute(ConstantesComuns.EXERCICIO_SESSAO);
-		Date de = (Date) sessao.getAttribute(ConstantesComuns.PERIODO_SESSAO_DE);
-		Date ate = (Date) sessao.getAttribute(ConstantesComuns.PERIODO_SESSAO_ATE);
+		Exercicio exercicio = loginBean.getExercicio();
+		Date de = loginBean.getDe();
+		Date ate = loginBean.getAte();
 		
 		try {
 			dao = new BalanceteDAO(new LancamentoDAO(), new ExercicioDAO());

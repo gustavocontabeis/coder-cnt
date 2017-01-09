@@ -34,16 +34,16 @@ public class PlanoContasDAO extends BaseDAO<PlanoContas> {
  		String hql = "from Conta conta where ";
  		if(exercicio.getEmpresa()!=null)
  			hql += "or conta.empresa.id = :empresa ";
- 		if(exercicio.getId()!=null)
- 			hql += "or conta.exercicio.id = :exercicio ";
+ 		if(exercicio.getPlanoContas()!=null)
+ 			hql += "or conta.planoContas.id = :planoContas ";
  		
  		Session session = getSession();
  		Query query = session.createQuery(hql.replace("where or", "where "));
  		
  		if(exercicio.getEmpresa()!=null)
  			query.setLong("empresa", exercicio.getEmpresa().getId());
- 		if(exercicio.getId()!=null)
- 			query.setLong("exercicio", exercicio.getId());
+ 		if(exercicio.getPlanoContas()!=null)
+ 			query.setLong("planoContas", exercicio.getPlanoContas().getId());
  		
  		return query.list();
  	}

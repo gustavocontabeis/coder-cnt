@@ -31,6 +31,10 @@ public class Exercicio extends BaseEntity {
  	@JoinColumn(name="ID_EMPRESA", nullable=false, foreignKey = @ForeignKey(name="FK_EXERCICIO_EMPRESA"))
  	private Empresa empresa;
  
+ 	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.EAGER) 
+ 	@JoinColumn(name="ID_PLANO_CONTAS", nullable=false, foreignKey = @ForeignKey(name="FK_EXERCICIO_PLANO_CONTAS"))
+ 	private PlanoContas planoContas;
+ 
  	@Column(name="ANO", length=10, nullable=false)
  	private Integer ano;
  
@@ -82,6 +86,12 @@ public class Exercicio extends BaseEntity {
 	}
 	public void setFechado(Boolean fechado) {
 		this.fechado = fechado;
+	}
+	public PlanoContas getPlanoContas() {
+		return planoContas;
+	}
+	public void setPlanoContas(PlanoContas planoContas) {
+		this.planoContas = planoContas;
 	}
 
 	@Override

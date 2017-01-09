@@ -10,15 +10,15 @@
 		<div align="center">
 			<h:outputText value="Balançete de verificação" />
 			<br />
-			<h:outputFormat value="#{consultarBalanceteAction.balancete.exercicio.empresa.razaoSocial}" />
+			<h:outputFormat value="#{balanceteManagedBean.balancete.exercicio.empresa.razaoSocial}" />
 			<br />
 			<h:outputFormat value="Período de {0, date} até {1, date}">
-				<f:param value="#{consultarBalanceteAction.balancete.de}" />
-				<f:param value="#{consultarBalanceteAction.balancete.ate}" />
+				<f:param value="#{balanceteManagedBean.balancete.de}" />
+				<f:param value="#{balanceteManagedBean.balancete.ate}" />
 			</h:outputFormat>
 		</div>
 		<br />
-		<h:dataTable value="#{consultarBalanceteAction.balancete.saldos}" var="obj" columnClasses="texto, texto, texto, numero, numero, numero, numero" rendered="#{not empty consultarBalanceteAction.balancete.saldos}" width="100%"
+		<h:dataTable value="#{balanceteManagedBean.balancete.saldos}" var="obj" columnClasses="texto, texto, texto, numero, numero, numero, numero" rendered="#{not empty balanceteManagedBean.balancete.saldos}" width="100%"
 			styleClass="destacarLinha">
 			<h:column>
 				<f:facet name="header">

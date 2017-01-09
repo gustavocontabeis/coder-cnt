@@ -76,6 +76,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	
 	public void novo(ActionEvent evt) {
 		lancamento = new Lancamento();
+		lancamento.setExercicio(loginBean.getExercicio());
 	}
 
 	public void clonar(ActionEvent evt) {
@@ -93,6 +94,12 @@ public class LancamentoManagedBean extends BaseManagedBean {
 
 	public void salvar(ActionEvent evt) throws DaoException {
 		try {
+			
+			if(lancamento.getDebito()!=null&&lancamento.getCredito()!=null){
+				lancamento.setLancamentoTipo(LancamentoTipo.SIMPLES);
+			}else{
+				lancamento.setLancamentoTipo(LancamentoTipo.COMPOSTO);
+			}
 			dao.salvar(lancamento);
 			message(null, "Registro salvo com sucesso.");
 		} catch (Exception e) {
