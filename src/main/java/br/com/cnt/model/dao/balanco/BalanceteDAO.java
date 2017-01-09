@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import br.com.cnt.model.dao.BaseDAO;
 import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.entity.balanco.Empresa;
@@ -11,17 +14,24 @@ import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.Balancete;
 import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
 
+@Named
 public class BalanceteDAO implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Inject private LancamentoDAO daoLancamentos;
+	@Inject private ExercicioDAO daoExercicio;
+	
+	public BalanceteDAO(LancamentoDAO daoLancamentos, ExercicioDAO daoExercicio) {
+		super();
+		this.daoLancamentos = daoLancamentos;
+		this.daoExercicio = daoExercicio;
+	}
+
+
 
 	public Balancete buscarBalancete(Exercicio exercicio, Date de , Date ate) throws DaoException{
 		
-		LancamentoDAO daoLancamentos = new LancamentoDAO();
-		ExercicioDAO daoExercicio = new ExercicioDAO();
 		exercicio = daoExercicio.buscar(exercicio.getId());
 		Empresa empresa = exercicio.getEmpresa();
 		exercicio.setEmpresa(empresa);

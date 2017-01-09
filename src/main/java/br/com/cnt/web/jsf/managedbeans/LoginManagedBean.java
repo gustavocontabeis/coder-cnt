@@ -29,6 +29,7 @@ import br.com.cnt.model.dao.usuarios.UsuarioDAO;
 import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.usuarios.Usuario;
+import br.com.cnt.model.utils.ConstantesComuns;
 import br.com.tche.geradorcodigo.util.StringUtil;
 @Named @javax.enterprise.context.SessionScoped
 //@ManagedBean @SessionScoped
@@ -156,6 +157,10 @@ public class LoginManagedBean implements Serializable {
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
 				break;
 			}
+			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+			sessao.setAttribute(ConstantesComuns.EXERCICIO_SESSAO, exercicio);
+			sessao.setAttribute(ConstantesComuns.PERIODO_SESSAO_DE, de);
+			sessao.setAttribute(ConstantesComuns.PERIODO_SESSAO_ATE, ate);
 		}
 	}
 

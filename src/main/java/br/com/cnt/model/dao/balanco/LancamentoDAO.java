@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Named;
+
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Query;
@@ -25,6 +27,7 @@ import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
 import br.com.cnt.model.entity.balanco.dto.SaldoRazao;
 import br.com.cnt.model.utils.ContaUtil;
 
+@Named
 public class LancamentoDAO extends BaseDAO<Lancamento> {
 	
  	private static final long serialVersionUID = 1L;
