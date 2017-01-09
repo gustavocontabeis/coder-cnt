@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 
 import org.primefaces.model.LazyDataModel;
@@ -20,7 +22,6 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Empresa;
-import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.entity.usuarios.Usuario;
 import br.com.cnt.model.utils.ContaUtil;
@@ -45,6 +46,7 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 
 	private List<Empresa> empresas;
 	private List<PlanoContas> planocontas;
+	private Long id;
 
 	@PostConstruct
 	private void init() {
@@ -54,6 +56,27 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 		planocontas = getPopularComboPlanoContas();
 	}
 
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void listener(ComponentSystemEvent evt) throws AbortProcessingException{
+		if(id != null){
+			try {
+				conta = dao.buscar(new Long(id));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				message(e);
+			} catch (DaoException e) {
+				e.printStackTrace();
+				message(e);
+			}
+		}
+	}
+	
 	private void loadLazyModel() {
 		model = new LazyDataModel<Conta>() {
 			private static final long serialVersionUID = 1L;
