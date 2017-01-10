@@ -36,8 +36,13 @@ public class SegurancaFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        paginasPrivadas.put("/pages/categoria/categoria.jsf", new String[]{"ADM"});
-        paginasPrivadas.put("/pages/imovel2/imovel.jsf", new String[]{"ADM"});
+        paginasPrivadas.put("/pages/balancete/", new String[]{"ADM"});
+        paginasPrivadas.put("/pages/configuracoes/", new String[]{"ADM"});
+        paginasPrivadas.put("/pages/conta/", new String[]{"ADM"});
+        paginasPrivadas.put("/pages/empresa/", new String[]{"ADM"});
+        paginasPrivadas.put("/pages/exercicio/", new String[]{"ADM"});
+        paginasPrivadas.put("/pages/lancamentos/", new String[]{"ADM"});
+        paginasPrivadas.put("/pages/planocontas/", new String[]{"ADM"});
     }
 
     @Override

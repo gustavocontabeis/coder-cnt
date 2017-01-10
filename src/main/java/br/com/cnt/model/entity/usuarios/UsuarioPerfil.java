@@ -20,38 +20,38 @@ import org.hibernate.validator.constraints.NotEmpty;
 import br.com.cnt.model.entity.BaseEntity;
 
 @XmlRootElement
-@Entity @Table(name="usuario_perfil")
+@Entity @Table(name="USUARIO_PERFIL")
 //@NamedQueries(value = {
-//    @NamedQuery(name = "todosUsuarioPerfil", query = "from UsuarioPerfil")
+//    @NamedQuery(name = "todosUsuarioPerfil", query = "select obj from UsuarioPerfil obj")
 //})
-public class UsuarioPerfil implements Serializable {
+public class UsuarioPerfil extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
-    @GeneratedValue(generator="seq_usuario_perfil", strategy=GenerationType.SEQUENCE) 
-    @SequenceGenerator(name="seq_usuario_perfil", sequenceName="seq_usuario_perfil", initialValue=100) 
-    @Column(name = "id_usuario_perfil")
+    @GeneratedValue(generator="SEQ_USUARIO_PERFIL", strategy=GenerationType.SEQUENCE) 
+    @SequenceGenerator(name="SEQ_USUARIO_PERFIL", sequenceName="SEQ_USUARIO_PERFIL", initialValue=100) 
+    @Column(name = "ID_USUARIO_PERFIL")
     private Long id;
 
     //@NotNull 
     @ManyToOne(cascade={CascadeType.DETACH})
-    @JoinColumn(name = "id_usuario", nullable = false, foreignKey = @ForeignKey(name = "usuario_perfil_acesso_usuario_fk"))
+    @JoinColumn(name = "ID_USUARIO", nullable = false, foreignKey = @ForeignKey(name = "USUARIO_PERFIL_ACESSO_USUARIO_FK"))
     private Usuario usuario;
 
     //@NotNull 
     @ManyToOne(cascade={CascadeType.DETACH})
-    @JoinColumn(name = "id_perfil_acesso", nullable = false, foreignKey = @ForeignKey(name = "usuario_perfil_acesso_perfil_fk"))
+    @JoinColumn(name = "ID_PERFIL_ACESSO", nullable = false, foreignKey = @ForeignKey(name = "USUARIO_PERFIL_ACESSO_PERFIL_FK"))
     private PerfilAcesso perfil;
     
     
 	//@NotEmpty 
-	@Column(name="nome_usuario", length=50, nullable=false)
+	@Column(name="NOME_USUARIO", length=50, nullable=false)
 	private String nomeUsuario;
 
 	//@NotEmpty 
-	@Column(name="nome_perfil", length=50, nullable=false)
+	@Column(name="NOME_PERFIL", length=50, nullable=false)
 	private String nomePerfil;
 
 

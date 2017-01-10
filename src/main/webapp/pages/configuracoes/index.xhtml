@@ -10,57 +10,57 @@
 		<h:form>
 			<p:focus />
 			<div class="ui-fluid">
-				<p:panelGrid id="pgImovel" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+				<p:panelGrid id="pgConf" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10" >
 		
 					<p:outputLabel for="empresa" value="#{labels['conta.empresa']}" />
-					<p:selectOneMenu id="empresa" value="#{loginManagedBean.empresa}" required="false">
+					<p:selectOneMenu id="empresa" value="#{loginManagedBean.empresa}" required="false" >
 						<f:selectItem itemLabel="[Selecione]" />
 						<f:selectItems value="#{loginManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
 						<f:converter converterId="baseEntityConverter"/>
 						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
 						<f:attribute name="list" value="#{loginManagedBean.empresas}" />
-						<p:ajax event="change" update="@all" />
+						<p:ajax event="change" update="@all" listener="#{loginManagedBean.aoSelecionarEmpresa}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="exercicio" value="#{labels['exercicio.ano']}" />
 					<p:selectOneMenu id="exercicio" value="#{loginManagedBean.exercicio}" required="false">
 						<f:selectItem itemLabel="[Selecione]" />
-						<f:selectItems value="#{loginManagedBean.popularComboExercicio}" var="obj" itemValue="#{obj}" itemLabel="#{obj.ano}" />
+						<f:selectItems value="#{loginManagedBean.exercicios}" var="obj" itemValue="#{obj}" itemLabel="#{obj.ano}" />
 						<f:converter converterId="baseEntityConverter"/>
 						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Exercicio" />
 						<f:attribute name="list" value="#{loginManagedBean.exercicios}" />
-						<p:ajax event="change" update="@all" listener="#{loginManagedBean.selecionarAno}" />
+						<p:ajax event="change" update="periodo,de,ate" listener="#{loginManagedBean.aoSelecionarExercicio}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="periodo" value="Período" />
 					<p:selectOneMenu id="periodo" value="#{loginManagedBean.periodo}" required="false">
 						<f:selectItem itemLabel="[Selecione]" />
 						
-						<f:selectItem itemValue="0" itemLabel="Anual" />
+						<f:selectItem itemValue="a" itemLabel="Anual" />
 						
-						<f:selectItem itemValue="1" itemLabel="1º Semestre" />
-						<f:selectItem itemValue="2" itemLabel="2º Semestre" />
+						<f:selectItem itemValue="1s" itemLabel="1º Semestre" />
+						<f:selectItem itemValue="2s" itemLabel="2º Semestre" />
 						
-						<f:selectItem itemValue="3" itemLabel="1º Trimestre" />
-						<f:selectItem itemValue="4" itemLabel="2º Trimestre" />
-						<f:selectItem itemValue="5" itemLabel="3º Trimestre" />
-						<f:selectItem itemValue="6" itemLabel="4º Trimestre" />
+						<f:selectItem itemValue="1t" itemLabel="1º Trimestre" />
+						<f:selectItem itemValue="2t" itemLabel="2º Trimestre" />
+						<f:selectItem itemValue="3t" itemLabel="3º Trimestre" />
+						<f:selectItem itemValue="4t" itemLabel="4º Trimestre" />
 						
-						<f:selectItem itemValue="7" itemLabel="1º Bimestre" />
-						<f:selectItem itemValue="8" itemLabel="2º Bimestre" />
-						<f:selectItem itemValue="9" itemLabel="3º Bimestre" />
-						<f:selectItem itemValue="10" itemLabel="4º Bimestre" />
-						<f:selectItem itemValue="11" itemLabel="5º Bimestre" />
-						<f:selectItem itemValue="12" itemLabel="6º Bimestre" />
+						<f:selectItem itemValue="1b" itemLabel="1º Bimestre" />
+						<f:selectItem itemValue="2b" itemLabel="2º Bimestre" />
+						<f:selectItem itemValue="3b" itemLabel="3º Bimestre" />			
+						<f:selectItem itemValue="4b" itemLabel="4º Bimestre" />
+						<f:selectItem itemValue="5b" itemLabel="5º Bimestre" />
+						<f:selectItem itemValue="6b" itemLabel="6º Bimestre" />
 						
 						<p:ajax event="change" update="de,ate" listener="#{loginManagedBean.selecionarPeriodo}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="de" value="De" />
-					<p:calendar id="de" value="#{loginManagedBean.de}" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" />
+					<p:calendar id="de" value="#{loginManagedBean.de}" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" disabled="true"/>
 					
 					<p:outputLabel for="ate" value="Até" />
-					<p:calendar id="ate" value="#{loginManagedBean.ate}" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" />
+					<p:calendar id="ate" value="#{loginManagedBean.ate}" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" disabled="true" />
 					
 				</p:panelGrid>
 			</div>

@@ -1,13 +1,17 @@
 package br.com.cnt.web.jsf.managedbeans;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -48,7 +52,24 @@ public class LancamentoManagedBean extends BaseManagedBean {
 		loadLazyModel();
 		getPopularComboConta();
 		getPopularComboExercicio();
-		getPopularComboLancamento();
+	}
+
+	private Long id;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void listener(ComponentSystemEvent evt) throws AbortProcessingException{
+		if(id != null){
+			try {
+				lancamento = dao.buscar(new Long(id));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				message(e);
+			}
+		}
 	}
 
 	private void loadLazyModel() {
@@ -76,12 +97,24 @@ public class LancamentoManagedBean extends BaseManagedBean {
 		};
 	}
 	
-	public List<Conta> buscarConta(String nome){
+	public List<Conta> buscarConta(String param){
 		Map<String, Object> filters = new HashMap<String, Object>();
-		filters.put("nome", nome);
-		filters.put("contaTipo", ContaTipo.ANALITICA);
-		List<Conta> buscar2 = contaDAO.buscar2(new Filtro<Conta>(Conta.class, 0, 100, null, null, filters));
-		return buscar2;
+		if(StringUtils.isNotBlank(param)){
+			
+			if(param.substring(0, 2).matches("\\d\\.")){
+				filters.put("estrutura", param+"%");
+			}else if(param.matches("\\d*.?")){
+				filters.put("id", new Long(param)); 
+			}else if(param.matches("\\d\\.\\d\\.\\d\\.\\d{2}\\.\\d{2}\\.\\d{2}\\.\\d{2}")){
+				filters.put("estrutura", param);
+			}else{
+				filters.put("nome", param);
+			}
+			filters.put("contaTipo", ContaTipo.ANALITICA);
+			List<Conta> buscar2 = contaDAO.buscar2(new Filtro<Conta>(Conta.class, 0, 100, null, null, filters));
+			return buscar2;
+		}
+		return new ArrayList<Conta>();
 	}
 	
 	public void novo(ActionEvent evt) {
@@ -152,11 +185,6 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	public List<Exercicio> getPopularComboExercicio() {
 		exercicios = exercicioDAO.buscarTodos();
 		return exercicios;
-	}
-
-	public List<Lancamento> getPopularComboLancamento() {
-		lancamentos = dao.buscarTodos();
-		return lancamentos;
 	}
 
 	public LancamentoTipo[] getPopularComboLancamentoTipo() {

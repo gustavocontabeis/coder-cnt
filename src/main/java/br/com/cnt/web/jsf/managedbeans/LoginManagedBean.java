@@ -58,7 +58,9 @@ public class LoginManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
-		if(Boolean.TRUE){
+		
+		//Desenv!!!
+		if(Boolean.FALSE){
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 			HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
 			HttpSession session = request.getSession();
@@ -68,99 +70,103 @@ public class LoginManagedBean implements Serializable {
 				session.setAttribute("usuario", usuario);
 				this.usuario = usuario;
 			}
-			empresas = getPopularComboEmpresa();
-			exercicios = getPopularComboExercicio();
-			
-			
-//			PessoaDAO pessoaDAO = new PessoaDAO();
-//			if(usuario.getPessoa()!=null && usuario.getPessoa().getId()!=null){
-//				pessoapessoaDAO.buscar(this.usuario.getPessoa().getId())
-//				
-//			}
 		}
-	}
-
-	public List<Exercicio> getPopularComboExercicio() {
-		if(empresa != null){
-			exercicios = exercicioDAO.buscarExercicio(empresa);
-		}else{
-			exercicio = null;
-			de = null;
-			ate = null;
-		}
-		periodo = null;
-		return exercicios;
+		empresas = getPopularComboEmpresa();
 	}
 
 	public List<Empresa> getPopularComboEmpresa() {
 		return empresaDAO.buscarTodos();
 	}
 	
-	public void selecionarAno() throws IOException {
+	public void aoSelecionarEmpresa(){
+		popularComboExercicio();
+	}
+	
+	public void popularComboExercicio(){
+		if(empresa != null){
+			exercicios = exercicioDAO.buscarExercicio(empresa);
+		}else{
+			exercicio = null;
+		}
+		periodo = null;
+		de = null;
+		ate = null;
+	}
+	
+	public void aoSelecionarExercicio(){
+		periodo = null;
+		de = null;
+		ate = null;
+	}
+	
+	public void selecionarAno() {
 		this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
 		this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
-		periodo = null; 
+		periodo = "0"; 
 	}
 
 	public void selecionarPeriodo() throws IOException {
 		if(!StringUtil.isBlank(periodo)){
-			int valueOf = Integer.valueOf(periodo).intValue();
-			switch (valueOf) {
-			case 1:
+			switch (periodo) {
+			case "a":
+				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
+				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
+				break;
+			case "1s":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.JUNE, 30).getTime();
 				break;
-			case 2:
-				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JUNE, 1).getTime();
+			case "2s":
+				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JULY, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
 				break;
-			case 3://Trimestre
+			case "1t"://Trimestre
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.MARCH, 31).getTime();
 				break;
-			case 4:
+			case "2t":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.APRIL, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.JUNE, 30).getTime();
 				break;
-			case 5:
+			case "3t":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JULY, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.SEPTEMBER, 30).getTime();
 				break;
-			case 6:
+			case "4t":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.OCTOBER, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
 				break;
-			case 7://Bimestre
+			case "1b"://Bimestre
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
 				Calendar cal = new GregorianCalendar(exercicio.getAno(), Calendar.MARCH, 1);
 				cal.add(Calendar.DAY_OF_MONTH, -1);
 				this.ate = cal.getTime(); 
 				break;
-			case 8:
+			case "2b":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.MARCH, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.APRIL, 30).getTime();
 				break;
-			case 9:
+			case "3b":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.MAY, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.JUNE, 30).getTime();
 				break;
-			case 10:
+			case "4b":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JULY, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.AUGUST, 31).getTime();
 				break;
-			case 11:
+			case "5b":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.SEPTEMBER, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.OCTOBER, 31).getTime();
 				break;
-			case 12:
+			case "6b":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.NOVEMBER, 1).getTime();
 				this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
 				break;
 			}
-			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-			sessao.setAttribute(ConstantesComuns.EXERCICIO_SESSAO, exercicio);
-			sessao.setAttribute(ConstantesComuns.PERIODO_SESSAO_DE, de);
-			sessao.setAttribute(ConstantesComuns.PERIODO_SESSAO_ATE, ate);
+//			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+//			sessao.setAttribute(ConstantesComuns.EXERCICIO_SESSAO, exercicio);
+//			sessao.setAttribute(ConstantesComuns.PERIODO_SESSAO_DE, de);
+//			sessao.setAttribute(ConstantesComuns.PERIODO_SESSAO_ATE, ate);
 		}
 	}
 
@@ -184,6 +190,7 @@ public class LoginManagedBean implements Serializable {
 			
 			this.usuario = usuario;
 			
+			
 			if(session.getAttribute("destino") != null){
 				HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
 				String destino = (String) session.getAttribute("destino");
@@ -199,6 +206,12 @@ public class LoginManagedBean implements Serializable {
 			redirecionarLogin();
 		}
 
+	}
+	
+	public void loginDesenv(ActionEvent event) throws IOException {
+		this.username = "gustavo";
+		this.password = "123";
+		login(null);
 	}
 	
 	private void redirecionarLogin() throws IOException {

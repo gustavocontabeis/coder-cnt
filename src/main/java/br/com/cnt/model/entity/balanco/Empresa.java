@@ -13,9 +13,13 @@ import br.com.cnt.model.entity.BaseEntity;
 import br.com.cnt.model.entity.usuarios.Usuario;
 
 @XmlRootElement
-@Entity @Table(name="EMPRESA")
+@Entity @Table(name="EMPRESA", 
+	indexes={
+		@Index(name="INDEX_EMPRESA_RAZAO_SOCIAL", columnList = "RAZAO_SOCIAL"),
+		@Index(name="INDEX_EMPRESA_CNPJ", columnList = "CNPJ"),
+	})
 @NamedQueries(value={
-		@NamedQuery(name="todosEmpresa", query="from Empresa")
+		@NamedQuery(name="todosEmpresa", query="select obj from Empresa obj ")
 	})
 public class Empresa extends BaseEntity {
 	
@@ -28,7 +32,7 @@ public class Empresa extends BaseEntity {
  	private Long id;
  
 	@ManyToOne(cascade=CascadeType.DETACH) 
-	@JoinColumn(name="ID_EMPRESA_MATRIZ", nullable=true, foreignKey=@ForeignKey(name="empresa_empresa_fk"))
+	@JoinColumn(name="ID_EMPRESA_MATRIZ", nullable=true, foreignKey=@ForeignKey(name="EMPRESA_MATRIZ_fk"))
  	private Empresa matriz;
  
 	@NotEmpty 

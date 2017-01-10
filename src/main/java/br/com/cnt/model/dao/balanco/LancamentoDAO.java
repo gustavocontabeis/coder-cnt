@@ -445,19 +445,13 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 	}
 
 	public Lancamento buscar(Long id) {
-		//new Lancamento().getDebito()
 		Session session = getSession();
-		Query query = session.createQuery("select obj from Lancamento obj inner join fetch obj.debito d inner join fetch obj.credito c where obj.id = :id");
+		Query query = session.getNamedQuery("Lancamento-buscar");
 		query.setLong("id", id);
 		Object uniqueResult = query.uniqueResult();
 		session.close();
 		return (Lancamento) uniqueResult;
 	}
 
-	public List<Lancamento> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }
  

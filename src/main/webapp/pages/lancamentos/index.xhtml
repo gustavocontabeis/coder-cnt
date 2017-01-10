@@ -3,6 +3,11 @@
 
 <ui:composition template="/pages/templates/#{configManagedBean.template}.xhtml">
 
+	<f:metadata>
+        <f:viewParam name="id" value="#{lancamentoManagedBean.id}" converter="javax.faces.Long"/>
+        <f:event type="preRenderView"  listener="#{lancamentoManagedBean.listener}" />
+    </f:metadata>
+
 	<ui:define name="pageTitle">..:: Cadastro de Lançamentos ::..</ui:define>
 
 	<ui:define name="body">
@@ -14,7 +19,6 @@
 		<p:growl />
 		<h:form id="lancamento">
 			<h:inputHidden id="idHidden" value="#{lancamentoManagedBean.lancamento.id}" />		
-			<p:focus />
 			<div class="ui-fluid">
 				<div class="ui-g">
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
@@ -37,7 +41,7 @@
 				<div class="ui-g">
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
 						<p:outputLabel for="date" value="#{labels['lancamento.date']}" />
-						<p:calendar id="date" value="#{lancamentoManagedBean.lancamento.date}" required="true" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" />
+						<p:calendar id="date" value="#{lancamentoManagedBean.lancamento.date}" required="true" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" mask="99/99/9999"/>
 				    </div>
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
 				    </div>
@@ -55,9 +59,12 @@
 							<f:attribute name="list" value="#{lancamentoManagedBean.contas}" />
 						</p:selectOneMenu>
 						<p:autoComplete id="debito" value="#{lancamentoManagedBean.lancamento.debito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
-		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" >
+		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true">
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.id}" />
+				            </p:column>
 				            <p:column>
 				                <h:outputText value="#{obj.estrutura}" />
 				            </p:column>
@@ -79,6 +86,9 @@
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" >
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.id}" />
+				            </p:column>
 				            <p:column>
 				                <h:outputText value="#{obj.estrutura}" />
 				            </p:column>
@@ -123,15 +133,11 @@
 
 				<p:ajax event="rowSelect" update="@all" reflow="true" />
 
-				<p:column headerText="#{labels['lancamento.id']}" width="80">
+				<p:column headerText="#{labels['lancamento.id']}" width="40" >
 					<h:outputText value="#{item.id}" />
 				</p:column>
 
-				<p:column headerText="#{labels['lancamento.exercicio']}">
-					<h:outputText value="#{item.exercicio.empresa.razaoSocial}-#{item.exercicio.ano}" />
-				</p:column>
-
-				<p:column headerText="#{labels['lancamento.date']}">
+				<p:column headerText="#{labels['lancamento.date']}" width="70">
 					<h:outputText value="#{item.date}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
@@ -149,15 +155,11 @@
 					<h:outputText value="#{item.historico}" />
 				</p:column>
 
-				<p:column headerText="#{labels['lancamento.lancamentoPrincipal']}">
-					<h:outputText value="#{item.lancamentoPrincipal}" />
-				</p:column>
-
-				<p:column headerText="#{labels['lancamento.lancamentoTipo']}">
+				<p:column headerText="#{labels['lancamento.lancamentoTipo']}" width="60">
 					<h:outputText value="#{item.lancamentoTipo}" />
 				</p:column>
 
-				<p:column headerText="#{labels['lancamento.valor']}" styleClass="numerico">
+				<p:column headerText="#{labels['lancamento.valor']}" styleClass="numerico" width="120">
 					<h:outputText value="#{item.valor}">
 						<f:convertNumber type="number" minFractionDigits="2" />
 					</h:outputText>

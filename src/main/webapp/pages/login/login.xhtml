@@ -11,39 +11,42 @@
 	<ui:define name="pageTitle">..:: Login ::..</ui:define>
 
 	<ui:define name="body">
+	<style type="text/css">
+		.centered {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	</style>
 		<h:form>
-
 			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-			<p:messages autoUpdate="true" showDetail="true" showSummary="true" />
-			<p:panel header="Login">
-				<h:panelGrid columns="2" cellpadding="5">
-					<h:outputLabel for="username" value="Username:" />
-					<p:inputText id="username" value="#{loginManagedBean.username}"
-						required="true" label="username" />
-
-					<h:outputLabel for="password" value="Password:" />
-					<p:password id="password" value="#{loginManagedBean.password}"
-						required="true" label="password" />
-
-					<f:facet name="footer">
-						<p:commandButton value="Login" ajax="false" actionListener="#{loginManagedBean.login}" />
-					</f:facet>
-				</h:panelGrid>
-			</p:panel>
+			
+			<table width="100%">
+				<tr>
+					<td width="30%"></td>
+					<td align="center" valign="middle" >
+						<p:panel header="Login">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel for="username" value="Username:" />
+								<p:inputText id="username" value="#{loginManagedBean.username}"
+									required="true" label="username" />
+			
+								<h:outputLabel for="password" value="Password:" />
+								<p:password id="password" value="#{loginManagedBean.password}"
+									required="true" label="password" />
+			
+								<f:facet name="footer">
+									<p:commandButton value="Login" ajax="false" actionListener="#{loginManagedBean.login}" />
+									<p:commandButton value="Login-Desenv" ajax="false" immediate="true" actionListener="#{loginManagedBean.loginDesenv}" rendered="#{facesContext.application.projectStage == 'Development'}" />
+								</f:facet>
+							</h:panelGrid>
+						</p:panel>
+					</td>
+					<td width="30%"></td>
+				</tr>
+			</table>
 		</h:form>
-
-		<script type="text/javascript">
-			function handleLoginRequest(xhr, status, args) {
-				if (args.validationFailed || !args.loggedIn) {
-					PF('dlg').jq.effect("shake", {
-						times : 5
-					}, 100);
-				} else {
-					PF('dlg').hide();
-					$('#loginLink').fadeOut();
-				}
-			}
-		</script>
 	</ui:define>
 
 </ui:composition>

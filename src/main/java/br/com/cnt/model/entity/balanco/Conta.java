@@ -3,31 +3,34 @@ package br.com.cnt.model.entity.balanco;
 
 import static javax.persistence.FetchType.LAZY;
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.ForeignKey;
 
 import br.com.cnt.model.entity.BaseEntity;
 import br.com.cnt.model.utils.ContaUtil;
 
 
 @Entity
-@Table(name="CONTAS")
+@Table(name="CONTAS", 
+	indexes={
+		@Index(name="INDEX_CONTA_NOME", columnList = "NOME"),
+		@Index(name="INDEX_CONTA_ESTRUTURA", columnList = "ESTRUTURA"),
+	})
 @NamedQueries(value={
 		@NamedQuery(name="Conta-buscar", 
 				query="select obj from Conta obj "
@@ -65,7 +68,7 @@ public class Conta extends BaseEntity {
 	private ContaOrigem contaOrigem;
  	
  	@ManyToOne(targetEntity=Empresa.class, fetch=LAZY, cascade={CascadeType.ALL}) 
- 	@JoinColumn(name="ID_EMPRESA", nullable=true, foreignKey = @ForeignKey(name="FK_EMPRESA"))
+ 	@JoinColumn(name="ID_EMPRESA", nullable=true, foreignKey = @ForeignKey(name="FK_CONTA_EMPRESA"))
  	private Empresa empresa;
  
  	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL}) 
@@ -134,20 +137,6 @@ public class Conta extends BaseEntity {
 	}
 	public void setPlanoContas(PlanoContas planoContas){
  		this.planoContas = planoContas;
-	}
-	@Override
-	public String toString() {
-//		return 
-//		"Conta [id=" + id + 
-//		", nome=" + nome + 
-//		", estrutura=" + estrutura + 
-//		", descricao=" + descricao + 
-//		", contaTipo=" + (contaTipo!=null?contaTipo:"") + 
-//		", contaOrigem=" + (contaOrigem!=null?contaOrigem:"") + 
-//		", empresa=" + (empresa!=null?empresa:"") + 
-//		", exercicio=" + (exercicio!=null?exercicio:"") + 
-//		", planoContas=" + (planoContas!=null?planoContas:"") + "]";
-		return super.toString();
 	}
 	public String getEstrutura() {
 		return estrutura;

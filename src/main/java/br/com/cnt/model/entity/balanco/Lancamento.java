@@ -12,8 +12,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,7 +26,13 @@ import javax.persistence.ForeignKey;
 import br.com.cnt.model.entity.BaseEntity;
 
 @Entity
-@Table(name="LANCAMENTO")
+@Table(name="LANCAMENTO", 
+	indexes={
+		@Index(name="INDEX_LANCAMENTO_HISTORICO", columnList = "HISTORICO")
+	})
+@NamedQueries(value={
+	@NamedQuery(name="Lancamento-buscar", query="select obj from Lancamento obj inner join fetch obj.exercicio ex inner join fetch obj.debito d inner join fetch obj.credito c where obj.id = :id")
+})
 public class Lancamento extends BaseEntity {
 	
  	private static final long serialVersionUID = 1L;
@@ -43,11 +52,11 @@ public class Lancamento extends BaseEntity {
  	private Exercicio exercicio;
  
  	@ManyToOne(targetEntity=Conta.class, fetch=LAZY) 
- 	@JoinColumn(name="DEBITO", nullable=true, foreignKey = @ForeignKey(name="FK_DEBITO"))
+ 	@JoinColumn(name="DEBITO", nullable=true, foreignKey = @ForeignKey(name="FK_LANCAMENTO_DEBITO"))
  	private Conta debito;
  
  	@ManyToOne(targetEntity=Conta.class, fetch=LAZY) 
- 	@JoinColumn(name="CREDITO", nullable=true, foreignKey = @ForeignKey(name="FK_CREDITO"))
+ 	@JoinColumn(name="CREDITO", nullable=true, foreignKey = @ForeignKey(name="FK_LANCAMENTO_CREDITO"))
  	private Conta credito;
  
  	@Column(name="VALOR", length=10, precision=2,  nullable=false)
@@ -63,6 +72,9 @@ public class Lancamento extends BaseEntity {
  	@Enumerated(EnumType.STRING)
 	private LancamentoTipo lancamentoTipo;
  	
+ 	/**
+ 	 * 
+ 	 */
  	public Lancamento() {
 		super();
 	}

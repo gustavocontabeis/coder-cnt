@@ -46,7 +46,6 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 
 	private List<Empresa> empresas;
 	private List<PlanoContas> planocontas;
-	private Long id;
 
 	@PostConstruct
 	private void init() {
@@ -56,13 +55,13 @@ public class ContaManagedBean extends BaseManagedBean<Conta, ContaDAO> {
 		planocontas = getPopularComboPlanoContas();
 	}
 
+	private Long id;
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public void listener(ComponentSystemEvent evt) throws AbortProcessingException{
 		if(id != null){
 			try {

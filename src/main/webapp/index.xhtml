@@ -18,6 +18,12 @@
 		.ui-widget {
 		    font-size: ${configManagedBean.fontSize};
 		}
+		.centered {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 	</style>
 	<link rel="stylesheet" type="text/css" href="${request.contextPath}/lib/css/estilo.css" />
 	<script type="text/javascript" src="${request.contextPath}/lib/js/funcoes.js"></script>
@@ -25,10 +31,35 @@
 <h:body>
 	<f:view>
 		<f:loadBundle basename="labels" var="labels" />
-		<a href="${request.contextPath}/pages/configuracoes">
-			Entrar
-		</a>
-		
+			<h:panelGroup rendered="true">
+				<a href="${request.contextPath}/pages/configuracoes">
+					<img src="lib/img/contabilidade-1.jpg" alt="Entrar" class="centered" width="1000"/>
+					<!-- 
+					<img src="lib/img/contabilidade-3.jpg" alt="Entrar" class="centered" />
+					<img src="lib/img/contabilidade-2.jpeg" alt="Entrar" class="centered"/>
+					<img src="lib/img/contabilidade-4.jpg" alt="Entrar" class="centered" />
+					<img src="lib/img/contabilidade-5.png" alt="Entrar" class="centered"/>
+					 -->
+				</a>
+			</h:panelGroup>
+			<p:carousel autoPlayInterval="2000" responsive="true" effect="easeInStrong" circular="true" numVisible="1" rendered="false">
+				<h:panelGroup layout="block" style="text-align:center;">
+						<p:graphicImage value="/lib/img/contabilidade-1.jpg"  width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-2.jpeg" width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-3.jpg"  width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-4.jpg"  width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-5.png"  width="600" />
+				</h:panelGroup>
+			</p:carousel>
+
 	</f:view>
 </h:body>
 </html>

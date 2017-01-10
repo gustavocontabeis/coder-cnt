@@ -19,27 +19,26 @@ import org.hibernate.validator.constraints.NotEmpty;
 import br.com.cnt.model.entity.BaseEntity;
 
 @XmlRootElement
-@Entity @Table(name="perfil_acesso")
+@Entity @Table(name="PERFIL_ACESSO")
 @NamedQueries(value={
-		@NamedQuery(name="todosPerfilAcesso", query="from PerfilAcesso")
+		@NamedQuery(name="todosPerfilAcesso", query="select obj from PerfilAcesso obj ")
 	})
-public class PerfilAcesso implements Serializable {
+public class PerfilAcesso extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id 
-	//@GeneratedValue(strategy=GenerationType.AUTO) 
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@SequenceGenerator(name="seq_perfil_acesso", sequenceName="seq_perfil_acesso", initialValue=100) 
-	@Column(name="id_perfil") 
+	@SequenceGenerator(name="SEQ_PERFIL_ACESSO", sequenceName="SEQ_PERFIL_ACESSO", initialValue=100) 
+	@Column(name="ID_PERFIL") 
 	private Long id;
 
 	@NotEmpty 
-	@Column(name="nome", length=15, nullable=false, unique=true)
+	@Column(name="NOME", length=15, nullable=false, unique=true)
 	private String nome;
 
 	@NotEmpty 
-	@Column(name="descricao", length=255, nullable=false)
+	@Column(name="DESCRICAO", length=255, nullable=false)
 	private String descricao;
 
 	public Long getId(){

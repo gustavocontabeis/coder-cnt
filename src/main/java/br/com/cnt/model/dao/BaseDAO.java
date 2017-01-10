@@ -259,7 +259,13 @@ public class BaseDAO<T extends BaseEntity> implements Serializable {
 //				}
 				
 				if(value instanceof String){
-					String val = "%"+String.valueOf(value).toLowerCase()+"%";
+					String strValue = (String) value;
+					String val = null;
+					if(strValue.startsWith("%") || strValue.endsWith("%")){
+						val = strValue;
+					}else{
+						val = "%"+String.valueOf(value).toLowerCase()+"%";
+					}
 					LOGGER.debug("{} like {}", key, val);
 					Predicate like = builder.like(builder.lower(from.get(key)), val);
 					where.add(like);
