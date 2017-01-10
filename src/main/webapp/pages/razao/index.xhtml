@@ -3,107 +3,72 @@
 
 <ui:composition template="/pages/templates/#{configManagedBean.template}.xhtml">
 
-	<ui:define name="pageTitle">..:: TÌtulo ::..</ui:define>
+	<ui:define name="pageTitle">..:: Consulta Raz√£o ::..</ui:define>
 
 	<ui:define name="body">
 		<p:messages />
-		<!-- 
-			form
-		 -->		
+		<div align="center">
+			<h:outputText value="Empresa: " />
+			<h:outputText value="#{consultarRazaoManagedBean.razao.exercicio.empresa.razaoSocial}" />
+		</div>
+		<div align="center">
+			<h:outputText value="Raz√£o: #{consultarRazaoManagedBean.razao.conta.nome}" />
+			<h:outputLabel value="De: " for="de" />
+			<h:outputText id="de" value="#{consultarRazaoManagedBean.razao.de}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+			<h:outputLabel value="At√©: " for="ate" />
+			<h:outputText id="ate" value="#{consultarRazaoManagedBean.razao.ate}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</div>
+		<h:dataTable value="#{consultarRazaoManagedBean.razao.saldosRazao}" var="obj" columnClasses="texto, texto, texto, numerico numerico" width="100%">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Cod." />
+				</f:facet>
+				<h:outputText value="#{obj.idLancamento}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Data" />
+				</f:facet>
+				<h:outputText value="#{obj.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Hist√≥rico" />
+				</f:facet>
+				<h:outputText value="#{obj.historico}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="D√©bito" />
+				</f:facet>
+				<h:outputText value="#{obj.vlrDebito}">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Cr√©dito" />
+				</f:facet>
+				<h:outputText value="#{obj.vlrCredito}">
+					<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR" />
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Editar" />
+				</f:facet>
+				<h:outputLink value="../cadastroLancamento/index.jsf?id=#{obj.idLancamento}">
+					<h:graphicImage url="../../img/editar.png" title="Alterar o lan√ßamento" height="15px" />
+				</h:outputLink>
+			</h:column>
+		</h:dataTable>
 	</ui:define>
 
 </ui:composition>
-</html>
-
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="f"  uri="http://java.sun.com/jsf/core"%>
-<%@ taglib prefix="h"  uri="http://java.sun.com/jsf/html"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link rel="stylesheet" type="text/css" href="../estilo.css" />
-<title>..:: Consulta raz„o cont·bil ::..</title>
-<style type="text/css">
-.texto{
-	text-align: left;
-}
-.saldo{
-	text-align: right;
-}
-</style>
-</head>
-<body>
-<f:view>
-<f:subview id="menu">
-	<jsp:include page="../../menu.jsp" />
-</f:subview>
-<br>
-<br>
-<div align="center">
-	<h:outputText value="Empresa: " />
-	<h:outputText value="#{consultarRazaoAction.razao.exercicio.empresa.razaoSocial}" />
-</div>
-<div align="center">
-	<h:outputText value="Raz„o: #{consultarRazaoAction.razao.conta.nome}" /><br>
-	<h:outputLabel value="De: " for="de" />
-	<h:outputText id="de" value="#{consultarRazaoAction.razao.de}">
-		<f:convertDateTime pattern="dd/MM/yyyy"/>
-	</h:outputText>
-	
-	<h:outputLabel value="AtÈ: " for="ate" />
-	<h:outputText id="ate" value="#{consultarRazaoAction.razao.ate}">
-		<f:convertDateTime pattern="dd/MM/yyyy"/>
-	</h:outputText>
-</div>
-<br>
-<h:dataTable value="#{consultarRazaoAction.razao.saldosRazao}" var="obj" columnClasses="texto, texto, texto, saldo, saldo" width="100%">
-	<h:column>
-		<f:facet name="header">
-			<h:outputText value="Cod." />
-		</f:facet>
-		<h:outputText value="#{obj.idLancamento}"/>
-	</h:column>
-	<h:column>
-		<f:facet name="header">
-			<h:outputText value="Data" />
-		</f:facet>
-		<h:outputText value="#{obj.data}">
-			<f:convertDateTime pattern="dd/MM/yyyy"/>
-		</h:outputText>
-	</h:column>
-	<h:column>
-		<f:facet name="header">
-			<h:outputText value="HistÛrico" />
-		</f:facet>
-		<h:outputText value="#{obj.historico}" />
-	</h:column>
-	<h:column>
-		<f:facet name="header">
-			<h:outputText value="DÈbito" />
-		</f:facet>
-		<h:outputText value="#{obj.vlrDebito}" >
-			<f:convertNumber type="currency"/>
-		</h:outputText>
-	</h:column>
-	<h:column>
-		<f:facet name="header">
-			<h:outputText value="CrÈdito" />
-		</f:facet>
-		<h:outputText value="#{obj.vlrCredito}" >
-			<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR"/>
-		</h:outputText>
-	</h:column>
-	<h:column>
-		<f:facet name="header">
-			<h:outputText value="Editar" />
-		</f:facet>
-		<h:outputLink value="../cadastroLancamento/index.jsf?id=#{obj.idLancamento}">
-			<h:graphicImage url="../../img/editar.png" title="Alterar o lanÁamento" height="15px" />
-		</h:outputLink> 
-	</h:column>
-</h:dataTable>
-
-</f:view>
-</body>
 </html>

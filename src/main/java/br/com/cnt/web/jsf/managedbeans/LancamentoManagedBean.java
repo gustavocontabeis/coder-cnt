@@ -1,5 +1,6 @@
 package br.com.cnt.web.jsf.managedbeans;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
 import br.com.cnt.model.dao.balanco.LancamentoDAO;
 import br.com.cnt.model.entity.balanco.Conta;
+import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.Lancamento;
 import br.com.cnt.model.entity.balanco.LancamentoTipo;
@@ -72,6 +74,14 @@ public class LancamentoManagedBean extends BaseManagedBean {
 		    	return String.valueOf(object.getId());
 		    }
 		};
+	}
+	
+	public List<Conta> buscarConta(String nome){
+		Map<String, Object> filters = new HashMap<String, Object>();
+		filters.put("nome", nome);
+		filters.put("contaTipo", ContaTipo.ANALITICA);
+		List<Conta> buscar2 = contaDAO.buscar2(new Filtro<Conta>(Conta.class, 0, 100, null, null, filters));
+		return buscar2;
 	}
 	
 	public void novo(ActionEvent evt) {

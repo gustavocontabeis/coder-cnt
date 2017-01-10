@@ -6,6 +6,24 @@
 	<ui:define name="pageTitle">..:: Balancete de Verificação ::..</ui:define>
 
 	<ui:define name="body">
+		<style type="text/css">
+			.red{
+				color: red;
+			}
+			.SINTETICA-1{
+				font-weight: bold;
+				font-style: italic;
+				font-size: 22 !important;
+			}
+			.SINTETICA-2{
+				font-weight: bold;
+				font-size: 18 !important;
+				font-stretch:wider; 
+			}
+			.SINTETICA-3{
+				font-weight: bold;
+			}
+		</style>
 		<p:messages />
 		<div align="center">
 			<h:outputText value="Balançete de verificação" />
@@ -20,7 +38,7 @@
 		<br />
 		<p:dataTable value="#{balanceteManagedBean.balancete.saldos}" var="obj" columnClasses="texto, texto, texto, numero, numero, numero, numero" rendered="#{not empty balanceteManagedBean.balancete.saldos}" width="100%"
 			styleClass="destacarLinha">
-			<p:column>
+			<p:column width="40">
 				<f:facet name="header">
 					<h:outputText value="Editar" />
 				</f:facet>
@@ -28,7 +46,7 @@
 					<i class="fa fa-pencil"></i>
 				</h:outputLink>
 			</p:column>
-			<p:column>
+			<p:column width="90">
 				<f:facet name="header">
 					<h:outputText value="Estrutura" />
 				</f:facet>
@@ -38,15 +56,15 @@
 				<f:facet name="header">
 					<h:outputText value="Conta" />
 				</f:facet>
-				<h:outputText value="#{obj.conta.nome}" title="Cod.Conta: #{obj.conta.id}, nível: #{obj.conta.id}" styleClass="#{obj.conta.contaTipo}" />
+				<h:outputText value="#{obj.conta.nome}" title="Cod.Conta: #{obj.conta.id}, nível: #{obj.conta.id}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}" />
 			</p:column>
-			<p:column>
+			<p:column style="text-align: right;">
 				<f:facet name="header">
 					<h:outputText value="Saldo Inicial" />
 				</f:facet>
 				<h:outputText value="#{obj.saldoInicialContabil}" styleClass="#{obj.conta.contaTipo} #{not obj.saldoInicialPositivo?'red':''}" />
 			</p:column>
-			<p:column>
+			<p:column style="text-align: right;">
 				<f:facet name="header">
 					<h:outputText value="Débito" />
 				</f:facet>
@@ -54,7 +72,7 @@
 					<f:convertNumber minFractionDigits="2" groupingUsed="true" />
 				</h:outputText>
 			</p:column>
-			<p:column>
+			<p:column style="text-align: right;">
 				<f:facet name="header">
 					<h:outputText value="Credito" />
 				</f:facet>
@@ -62,13 +80,13 @@
 					<f:convertNumber minFractionDigits="2" groupingUsed="true" />
 				</h:outputText>
 			</p:column>
-			<p:column>
+			<p:column style="text-align: right;">
 				<f:facet name="header">
 					<h:outputText value="Saldo Final" />
 				</f:facet>
 				<h:outputText value="#{obj.saldoFinalContabil}" styleClass="#{obj.conta.contaTipo} #{not obj.saldoFinalPositivo?'red':''}" />
 			</p:column>
-			<p:column>
+			<p:column width="40">
 				<f:facet name="header">
 					<h:outputText value="Editar" />
 				</f:facet>

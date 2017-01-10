@@ -64,7 +64,7 @@ public class BaseEntityConverter implements Converter {
 				if(objectDAO!=null){
 					dao = (BaseDAO<BaseEntity>) Class.forName(objectDAO.toString()).newInstance();
 				}else{
-					dao = (BaseDAO<BaseEntity>) Class.forName("br.com.imob.model.dao."+newInstance.getClass().getSimpleName()+"DAO").newInstance();
+					dao = (BaseDAO<BaseEntity>) Class.forName("br.com.cnt.model.dao."+newInstance.getClass().getSimpleName()+"DAO").newInstance();
 				}
 				try {
 					abstractBaseEntity = dao.buscar(abstractBaseEntity, abstractBaseEntity.getId());

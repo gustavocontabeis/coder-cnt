@@ -47,23 +47,45 @@
 				<div class="ui-g">
 				    <div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="debito" value="#{labels['lancamento.debito']}" />
-						<p:selectOneMenu id="debito" value="#{lancamentoManagedBean.lancamento.debito}" required="false">
+						<p:selectOneMenu id="debitox" value="#{lancamentoManagedBean.lancamento.debito}" required="false" rendered="false">
 							<f:selectItem itemLabel="[Selecione]" />
 							<f:selectItems value="#{lancamentoManagedBean.contas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
 							<f:converter converterId="baseEntityConverter" />
 							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 							<f:attribute name="list" value="#{lancamentoManagedBean.contas}" />
 						</p:selectOneMenu>
+						<p:autoComplete id="debito" value="#{lancamentoManagedBean.lancamento.debito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
+		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" >
+								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
+								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.estrutura}" />
+				            </p:column>
+				            <p:column>
+				                <h:outputText value="#{obj.nome}" />
+				            </p:column>
+				        </p:autoComplete>
 				    </div>
 				    <div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="credito" value="#{labels['lancamento.credito']}" />
-						<p:selectOneMenu id="credito" value="#{lancamentoManagedBean.lancamento.credito}" required="false">
+						<p:selectOneMenu id="creditoX" value="#{lancamentoManagedBean.lancamento.credito}" rendered="false">
 							<f:selectItem itemLabel="[Selecione]" />
 							<f:selectItems value="#{lancamentoManagedBean.popularComboConta}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
 							<f:converter converterId="baseEntityConverter" />
 							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 							<f:attribute name="list" value="#{lancamentoManagedBean.contas}" />
 						</p:selectOneMenu>
+						<p:autoComplete id="credito" value="#{lancamentoManagedBean.lancamento.credito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
+		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" >
+								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
+								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.estrutura}" />
+				            </p:column>
+				            <p:column>
+				                <h:outputText value="#{obj.nome}" />
+				            </p:column>
+				        </p:autoComplete>
 				    </div>
 				</div>
 			
