@@ -7,7 +7,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.dao.balanco.ContaDAO;
@@ -15,11 +14,10 @@ import br.com.cnt.model.dao.balanco.RazaoDAO;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.Razao;
-import br.com.cnt.model.utils.ConstantesComuns;
 
 //@ManagedBean @ViewScoped
 @javax.inject.Named @javax.faces.view.ViewScoped
-public class RazaoManagedBean extends BaseManagedBean<Conta, ContaDAO>{
+public class RazaoManagedBean extends BaseManagedBean{
 	
 	/**
 	 * 

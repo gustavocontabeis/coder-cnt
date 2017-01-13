@@ -67,12 +67,12 @@ public class Conta extends BaseEntity {
  	@Column(name="CONTA_ORIGEM")
 	private ContaOrigem contaOrigem;
  	
- 	@ManyToOne(targetEntity=Empresa.class, fetch=LAZY, cascade={CascadeType.ALL}) 
+ 	@ManyToOne(targetEntity=Empresa.class, fetch=LAZY, cascade={CascadeType.DETACH}) 
  	@JoinColumn(name="ID_EMPRESA", nullable=true, foreignKey = @ForeignKey(name="FK_CONTA_EMPRESA"))
  	private Empresa empresa;
  
- 	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL}) 
- 	@JoinColumn(name="ID_PLANO_CONTAS", nullable=true, foreignKey = @ForeignKey(name="FK_PLANO_CONTAS"))
+ 	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.LAZY, cascade={CascadeType.DETACH}) 
+ 	@JoinColumn(name="ID_PLANO_CONTAS", nullable=true, foreignKey = @ForeignKey(name="FK_CONTA_PLANO_CONTAS"))
  	private PlanoContas planoContas;
  	
 	public Conta() {

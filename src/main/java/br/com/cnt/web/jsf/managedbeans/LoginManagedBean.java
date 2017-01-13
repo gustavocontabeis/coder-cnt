@@ -212,6 +212,10 @@ public class LoginManagedBean implements Serializable {
 		this.username = "gustavo";
 		this.password = "123";
 		login(null);
+		empresa = empresas.iterator().next();
+		popularComboExercicio();
+		exercicio = exercicios.iterator().next();
+		selecionarAno();
 	}
 	
 	private void redirecionarLogin() throws IOException {

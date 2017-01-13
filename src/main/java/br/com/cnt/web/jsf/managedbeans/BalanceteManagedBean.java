@@ -25,7 +25,9 @@ import br.com.cnt.model.utils.ConstantesComuns;
 
 //@ManagedBean @ViewScoped
 @javax.inject.Named @javax.faces.view.ViewScoped //@javax.enterprise.context.RequestScoped
-public class BalanceteManagedBean extends BaseManagedBean<Conta, ContaDAO>{
+public class BalanceteManagedBean extends BaseManagedBean{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Balancete balancete;
 	
@@ -34,7 +36,6 @@ public class BalanceteManagedBean extends BaseManagedBean<Conta, ContaDAO>{
 	
 	@PostConstruct
 	private void init() {
-		System.out.println("xxxxxxxxxxxxxx");
 		if(loginBean != null){
 			Exercicio exercicio = loginBean.getExercicio();
 			if(exercicio == null){
@@ -72,22 +73,5 @@ public class BalanceteManagedBean extends BaseManagedBean<Conta, ContaDAO>{
 	public void setBalancete(Balancete balancete) {
 		this.balancete = balancete;
 	}
-
-	public BalanceteDAO getDao() {
-		return dao;
-	}
-
-	public void setDao(BalanceteDAO dao) {
-		this.dao = dao;
-	}
-
-//	public IndexAction getIndexAction() {
-//		return indexAction;
-//	}
-//
-//	public void setIndexAction(IndexAction indexAction) {
-//		this.indexAction = indexAction;
-//	}
-	
 
 }

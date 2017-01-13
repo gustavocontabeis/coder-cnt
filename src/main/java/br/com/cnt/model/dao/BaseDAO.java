@@ -30,6 +30,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,6 +103,16 @@ public class BaseDAO<T extends BaseEntity> implements Serializable {
     }
 
     private void validate(Serializable obj) throws DaoException {
+    	
+//    	Validator validator = Validation.byDefaultProvider()
+//    	        .configure()
+//    	        .messageInterpolator(
+//    	                new ResourceBundleMessageInterpolator(
+//    	                        new PlatformResourceBundleLocator( "labels" )
+//    	                )
+//    	        )
+//    	        .buildValidatorFactory()
+//    	        .getValidator();
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();

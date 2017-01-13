@@ -4,24 +4,23 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 
 import br.com.cnt.model.dao.BaseDAO;
+import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.entity.BaseEntity;
 import br.com.cnt.model.utils.Filtro;
 import br.com.cnt.model.utils.I18nUtils;
 
-public class BaseManagedBean<T extends BaseEntity, D extends BaseDAO<T>> implements Serializable {
+public class BaseManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
-	protected T entity;
-	
-	//@Inject
-	protected BaseDAO<T> dao;
 	
 	@Inject
 	@ManagedProperty(value="#{loginManagedBean}")
@@ -57,23 +56,9 @@ public class BaseManagedBean<T extends BaseEntity, D extends BaseDAO<T>> impleme
 		FacesContext.getCurrentInstance().addMessage(component, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
 	}
 	
-	public List<T> autocomplete(String search){
-		Filtro<T> filtro = new Filtro<T>(getClasse());
-		filtro.addFilter(filtrarAutocompletePor(), search);
-		List<T> buscar = getDAO().buscar(filtro);
-		return buscar;
-	}
-	
-	protected BaseDAO<T> getDAO() {
-		return null;
-	}
-
-	protected Class<? extends Serializable> getClasse() {
-		return null;
-	}
-
-	protected String filtrarAutocompletePor() {
-		return "nome";
+	@PostConstruct
+	private void init() {
+		System.out.println("BaseManagedBean.init() ");
 	}
 	
 }

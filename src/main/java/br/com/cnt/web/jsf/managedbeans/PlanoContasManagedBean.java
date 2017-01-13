@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 
@@ -19,10 +17,8 @@ import br.com.cnt.model.utils.Filtro;
 
 //@ManagedBean @ViewScoped
 @javax.inject.Named @javax.faces.view.ViewScoped
-public class PlanoContasManagedBean extends BaseManagedBean<PlanoContas, PlanoContasDAO> {
+public class PlanoContasManagedBean extends BaseManagedBean {
 
-	/**
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private PlanoContas planoContas;
