@@ -1,13 +1,32 @@
-Criar pool de conexoes com c3po
-Adicionar injeção de dependencia (spring)
-Criar seguranca
-Configurar apache
-Configurar git maven e jenkins na jm
 
 
+Negócio - corrigir
+	Ajustar o saldo no razao
+	Testar as contas para diferentes empresas e planos de contas
+	Ajustar toda a aplicação ao CrudManagedBean
+	Ajustar as classes que não estao utilizando DCI corretamente.
+Arquitetura - corrigir
+	Atualizar o Gerador de código para a nova arquitetura
+Negócio - melhoria
+	Contas - Poder trabalhar com cada plano de contas separadamente.
+Arquitetura - melhoria
+	Fazer alteraçõe de layout
+	Criptografar senhas
+	Fazer uma maneira mais inteligente de utilizar combos e autocompletes
+	Fazer a aplicação utilizar cache
+Negócio - Nova funcionalidade
+	Criar lançamentos padrões
+	Crias históricos padroes (com substituiçoes de parâmetros)
+	Exportar/importar dados
+	Ajustar as telas conforme permissões e perfil
+	Fazer a recuperação de senha
+	Salvar configurações
+	Fazer troca de tema
+	Adicionar o tema a configuração do usuário
+Arquitetura - Nova funcionalidade
+	Criar pool de conexoes com c3po
+	Configurar git maven e jenkins na vm
+	Instalar o postgres na vm
+	Substituir o Hibernate pos padrão JPA
+	Seṕarar a arquitetura da aplicação
 
-
-Ajustar o CDI e escopo
-nao utilizar os métodos getPopularCombo
-Ajustar O Campo ID com Columns
-Ajustar Combos 

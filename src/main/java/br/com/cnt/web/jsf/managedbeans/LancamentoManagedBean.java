@@ -101,7 +101,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 		Map<String, Object> filters = new HashMap<String, Object>();
 		if(StringUtils.isNotBlank(param)){
 			
-			if(param.substring(0, 2).matches("\\d\\.")){
+			if(param.length()>=2 && param.substring(0, 2).matches("\\d\\.")){
 				filters.put("estrutura", param+"%");
 			}else if(param.matches("\\d*.?")){
 				filters.put("id", new Long(param)); 

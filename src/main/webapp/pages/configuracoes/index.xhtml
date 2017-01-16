@@ -53,7 +53,7 @@
 						<f:selectItem itemValue="5b" itemLabel="5º Bimestre" />
 						<f:selectItem itemValue="6b" itemLabel="6º Bimestre" />
 						
-						<p:ajax event="change" update="de,ate" listener="#{loginManagedBean.selecionarPeriodo}" />
+						<p:ajax event="change" update="@all" listener="#{loginManagedBean.selecionarPeriodo}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="de" value="De" />

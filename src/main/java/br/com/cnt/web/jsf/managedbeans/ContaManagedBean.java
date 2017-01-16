@@ -1,12 +1,15 @@
 package br.com.cnt.web.jsf.managedbeans;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-import org.primefaces.model.LazyDataModel;
+import org.apache.commons.beanutils.BeanUtils;
 
 import br.com.cnt.model.dao.BaseDAO;
 import br.com.cnt.model.dao.balanco.ContaDAO;
@@ -16,26 +19,28 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Empresa;
+import br.com.cnt.model.entity.balanco.Lancamento;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.ContaUtil;
 
-@javax.inject.Named @javax.faces.view.ViewScoped
+@Named @ViewScoped
 public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private List<Empresa> empresas;
+	private List<PlanoContas> planocontas;
+
 	@Inject private ContaDAO dao;
 	@Inject private EmpresaDAO empresaDAO;
 	@Inject private PlanoContasDAO planoContasDAO;
 
-	private List<Empresa> empresas;
-	private List<PlanoContas> planocontas;
-
 	@PostConstruct
 	private void init() {
 		System.out.println("ContaManagedBean.init() ");
+		novo(null);
 		empresas = getPopularComboEmpresa();
 		planocontas = getPopularComboPlanoContas();
 	}
@@ -45,13 +50,35 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		return dao;
 	}
 
-	public void novo(ActionEvent evt) {
-		entity = new Conta();
+	public Conta novo() {
+		entity = new Conta(); //refatorar. mao posso abrigar aqui a refetenciar yhis.entity.
+		return entity;
 	}
 	
 	@Override
-	protected void salvarAntes(Conta entity) {
+	protected boolean salvarAntes(Conta entity) {
 		entity.setNivel(ContaUtil.retornarNivel(entity));
+		return true;
+	}
+
+	public void clonar(ActionEvent evt) {
+		try {
+			Conta conta = (Conta) BeanUtils.cloneBean(entity);
+			conta.setId(null);
+			this.entity = conta;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			message(e);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			message(e);
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			message(e);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			message(e);
+		}
 	}
 
 	public ContaOrigem[] getPopularComboContaOrigem() {

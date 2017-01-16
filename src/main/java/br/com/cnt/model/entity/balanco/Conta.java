@@ -43,7 +43,7 @@ public class Conta extends BaseEntity {
  	
  	@Id 
  	@GeneratedValue(generator="SEQ_CONTA", strategy=GenerationType.SEQUENCE) 
-	@SequenceGenerator(name="SEQ_CONTA", sequenceName="SEQ_CONTA", initialValue=100) 
+	@SequenceGenerator(name="SEQ_CONTA", sequenceName="SEQ_CONTA", initialValue=1000) 
  	@Column(name="ID_CONTA", length=10,  nullable=false)
  	private Long id;
  
@@ -151,6 +151,5 @@ public class Conta extends BaseEntity {
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
 	}
-	
 	
 }

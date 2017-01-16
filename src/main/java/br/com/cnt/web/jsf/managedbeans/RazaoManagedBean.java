@@ -15,7 +15,6 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.Razao;
 
-//@ManagedBean @ViewScoped
 @javax.inject.Named @javax.faces.view.ViewScoped
 public class RazaoManagedBean extends BaseManagedBean{
 	
@@ -46,11 +45,6 @@ public class RazaoManagedBean extends BaseManagedBean{
 		Date de = loginBean.getDe();
 		Date ate = loginBean.getAte();
 		
-//		HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-//		Exercicio exercicio = (Exercicio) sessao.getAttribute(ConstantesComuns.EXERCICIO_SESSAO);
-//		Date de = (Date) sessao.getAttribute(ConstantesComuns.PERIODO_SESSAO_DE);
-//		Date ate = (Date) sessao.getAttribute(ConstantesComuns.PERIODO_SESSAO_ATE);
-//		
 		this.razao = new RazaoDAO().retornarRazao(conta, de, ate);
 		this.razao.setDe(de);
 		this.razao.setAte(ate);

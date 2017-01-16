@@ -25,6 +25,11 @@
 			}
 		</style>
 		<p:messages />
+		<p:lightBox iframe="true" id="lighbox3" >
+		    <h:outputLink value="${request.contextPath}/pages/lancamentos/popup.jsf" title="Cadastro de lançamentos">
+		        <h:outputText value="Lançamentos" />
+		    </h:outputLink>
+		</p:lightBox>
 		<div align="center">
 			<h:outputText value="Balançete de verificação" />
 			<br />
@@ -37,7 +42,7 @@
 		</div>
 		<br />
 		<p:dataTable value="#{balanceteManagedBean.balancete.saldos}" var="obj" columnClasses="texto, texto, texto, numero, numero, numero, numero" rendered="#{not empty balanceteManagedBean.balancete.saldos}" width="100%"
-			styleClass="destacarLinha">
+			styleClass="destacarLinha" resizableColumns="true">
 			<p:column width="40">
 				<f:facet name="header">
 					<h:outputText value="Editar" />
@@ -56,7 +61,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conta" />
 				</f:facet>
-				<h:outputText value="#{obj.conta.nome}" title="Cod.Conta: #{obj.conta.id}, nível: #{obj.conta.id}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}" />
+				<h:outputText value="#{obj.conta.nome}" title="Cod.Conta: #{obj.conta.id}, nível: #{obj.conta.id}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}" style="padding:#{obj.conta.nivel*4}px" />
 			</p:column>
 			<p:column style="text-align: right;">
 				<f:facet name="header">
@@ -95,6 +100,7 @@
 				</h:outputLink>
 			</p:column>
 		</p:dataTable>
+		
 	</ui:define>
 
 </ui:composition>

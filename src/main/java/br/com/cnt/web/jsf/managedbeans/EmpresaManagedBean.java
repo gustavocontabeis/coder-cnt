@@ -37,11 +37,13 @@ public class EmpresaManagedBean extends CrudManagedBean<Empresa, EmpresaDAO> {
 	}
 	
 	@Override
-	public void novo(ActionEvent evt) {
+	protected Empresa novo() {
 		entity = new Empresa();
 		entity.setExercicios(new ArrayList<Exercicio>());
 		entity.setMatriz(new Empresa());
+		return entity;
 	}
+
 
 	public List<Empresa> getPopularComboEmpresa() {
 		return empresaDAO.buscarTodos();

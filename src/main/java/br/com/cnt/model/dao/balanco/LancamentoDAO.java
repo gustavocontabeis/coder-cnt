@@ -70,9 +70,9 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
  	@SuppressWarnings("unchecked")
 	public List<SaldoContabil>buscarSaldoInicialDebito(Exercicio exercicio, Date de){
  		Session session = getSession();
- 		Query query = session.createQuery("select distinct lanc.debito.id, sum(lanc.valor) as valor from Lancamento lanc where lanc.debito.id is not null and lanc.exercicio.id = :exercicio and lanc.date < :de group by lanc.debito.id");
+ 		Query query = session.createQuery("select distinct lanc.debito.id, sum(lanc.valor) as valor from Lancamento lanc where lanc.debito.id is not null and lanc.exercicio.empresa.id = :empresa and lanc.date < :de group by lanc.debito.id");
  		
- 		query.setLong("exercicio", exercicio.getId());
+ 		query.setLong("empresa", exercicio.getEmpresa().getId());
  		query.setDate("de", de);
  		
  		query.setResultTransformer(new ResultTransformer() {
@@ -97,9 +97,9 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
  	@SuppressWarnings("unchecked")
 	public List<SaldoContabil>buscarSaldoInicialCredito(Exercicio exercicio, Date de){
  		Session session = getSession();
- 		Query query = session.createQuery("select distinct lanc.credito.id, sum(lanc.valor) as valor from Lancamento lanc where lanc.credito.id is not null and lanc.exercicio.id = :exercicio and lanc.date < :de group by lanc.credito.id");
+ 		Query query = session.createQuery("select distinct lanc.credito.id, sum(lanc.valor) as valor from Lancamento lanc where lanc.credito.id is not null and lanc.exercicio.empresa.id = :empresa and lanc.date < :de group by lanc.credito.id");
  		
- 		query.setLong("exercicio", exercicio.getId());
+ 		query.setLong("empresa", exercicio.getEmpresa().getId());
  		query.setDate("de", de);
  		
  		query.setResultTransformer(new ResultTransformer() {
@@ -410,8 +410,8 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		sb.append(String.format(" 	obj.credito.id, \n "));
 		sb.append(String.format(" 	obj.valor\n "));
 		sb.append(String.format(" from Lancamento obj \n "));
-		sb.append(String.format(" where (obj.debito.id is not null and obj.debito.id = :conta ) \n "));
-		sb.append(String.format("    or (obj.credito.id is not null and obj.credito.id = :conta )\n "));
+		sb.append(String.format(" where ((obj.debito.id is not null and obj.debito.id = :conta ) \n "));
+		sb.append(String.format("    or (obj.credito.id is not null and obj.credito.id = :conta ))\n "));
 		sb.append(String.format("   and (obj.date between :de and :ate)\n "));
 		
  		Session session = getSession();
@@ -451,6 +451,68 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		Object uniqueResult = query.uniqueResult();
 		session.close();
 		return (Lancamento) uniqueResult;
+	}
+
+	public SaldoRazao retornarSaldoInicialRazaoDebido(final Conta conta, Date de) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(" select \n "));
+		sb.append(String.format(" 	sum(obj.valor)\n "));
+		sb.append(String.format(" from Lancamento obj \n "));
+		sb.append(String.format(" where (obj.debito.id = :conta ) \n "));
+		sb.append(String.format("   and (obj.date < :de)\n "));
+		
+ 		Session session = getSession();
+ 		Query query = session.createQuery(sb.toString());
+ 		query.setLong("conta", conta.getId());
+ 		query.setDate("de", de);
+ 		query.setResultTransformer(new ResultTransformer() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Object transformTuple(Object[] tuple, String[] aliases) {
+				SaldoRazao obj = new SaldoRazao();
+				obj.setVlrDebito(new BigDecimal(tuple[0]!=null?(Double)tuple[0]:0f));
+				return obj;
+			}
+			@SuppressWarnings("rawtypes")
+			@Override
+			public List transformList(List collection) {
+				return collection;
+			}
+		});
+ 		@SuppressWarnings("rawtypes")
+		SaldoRazao uniqueResult = (SaldoRazao) query.uniqueResult();
+ 		return uniqueResult;
+	}
+
+	public SaldoRazao retornarSaldoInicialRazaoCredito(Conta conta, Date de) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(" select \n "));
+		sb.append(String.format(" 	sum(obj.valor)\n "));
+		sb.append(String.format(" from Lancamento obj \n "));
+		sb.append(String.format(" where (obj.credito.id = :conta ) \n "));
+		sb.append(String.format("   and (obj.date < :de)\n "));
+		
+ 		Session session = getSession();
+ 		Query query = session.createQuery(sb.toString());
+ 		query.setLong("conta", conta.getId());
+ 		query.setDate("de", de);
+ 		query.setResultTransformer(new ResultTransformer() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Object transformTuple(Object[] tuple, String[] aliases) {
+				SaldoRazao obj = new SaldoRazao();
+				obj.setVlrCredito(new BigDecimal(tuple[0]!=null?(Double)tuple[0]:0f));
+				return obj;
+			}
+			@SuppressWarnings("rawtypes")
+			@Override
+			public List transformList(List collection) {
+				return collection;
+			}
+		});
+ 		@SuppressWarnings("rawtypes")
+		SaldoRazao uniqueResult = (SaldoRazao) query.uniqueResult();
+ 		return uniqueResult;
 	}
 
 }

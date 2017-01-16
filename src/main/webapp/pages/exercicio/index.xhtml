@@ -39,6 +39,15 @@
 						<f:convertNumber type="number" integerOnly="true" />
 					</p:inputMask>
 
+					<p:outputLabel for="planoContas" value="#{labels['exercicio.planosContas']}" />
+					<p:selectOneMenu id="planoContas" value="#{exercicioManagedBean.exercicio.planoContas}" required="false">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{exercicioManagedBean.planocontas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.nome}" />
+						<f:converter converterId="baseEntityConverter"/>
+						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.PlanoContas" />
+						<f:attribute name="list" value="#{exercicioManagedBean.planocontas}" />
+					</p:selectOneMenu>
+
 					<p:outputLabel for="fechado" value="#{labels['exercicio.fechado']}" />
 					<p:selectBooleanCheckbox id="fechado" value="#{exercicioManagedBean.exercicio.fechado}" />
 

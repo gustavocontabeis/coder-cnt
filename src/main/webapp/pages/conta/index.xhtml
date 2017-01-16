@@ -71,6 +71,7 @@
 						<p:commandButton actionListener="#{contaManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty contaManagedBean.entity.id}" />
 						<p:commandButton actionListener="#{contaManagedBean.salvar}" value="Salvar" update="@all" />
 						<p:commandButton actionListener="#{contaManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty contaManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+						<p:commandButton actionListener="#{contaManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty contaManagedBean.entity.id}" />
 					</p:toolbarGroup>
 				</p:toolbar>
 			</h:form>
@@ -96,7 +97,7 @@
 					</p:column>
 	
 					<p:column headerText="#{labels['conta.nome']}">
-						<h:outputText value="#{item.nome}" />
+						<h:outputText value="#{item.nome}" style="padding:#{item.nivel*3}px"/>
 					</p:column>
 	
 					<p:column headerText="#{labels['conta.contaOrigem']}" width="80">

@@ -174,18 +174,21 @@ public class BaseDAO<T extends BaseEntity> implements Serializable {
 //            dto.criteria.setFetchMode(property, FetchMode.JOIN);
 //        }
 
-        if (filtro.isAscendente() && filtro.getPropriedadeOrdenacao() != null) {
+        if (filtro.getPropriedadeOrdenacao() != null) {
         	LOGGER.debug("Ordenação: ascendente? {} por? {}", filtro.isAscendente(), filtro.getPropriedadeOrdenacao());
-        	dto.criteriaQueryClass.orderBy(dto.builder.asc(dto.from.get(filtro.getPropriedadeOrdenacao())));
-        } else if (filtro.getPropriedadeOrdenacao() != null) {
-        	LOGGER.debug("Ordenação: decrescente por? {}", filtro.isAscendente(), filtro.getPropriedadeOrdenacao());
-        	dto.criteriaQueryClass.orderBy(dto.builder.desc(dto.from.get(filtro.getPropriedadeOrdenacao())));
+        	if(filtro.isAscendente()){
+        		dto.criteriaQueryClass.orderBy(dto.builder.asc(dto.from.get(filtro.getPropriedadeOrdenacao())));
+        	}else{
+        		dto.criteriaQueryClass.orderBy(dto.builder.desc(dto.from.get(filtro.getPropriedadeOrdenacao())));
+        	}
         }
 
         List list = createQuery.getResultList();
     	LOGGER.debug("Retornado {} registros.", list.size());
-    	for (Object object : list) {
-    		LOGGER.debug("	{}", ReflectionToStringBuilder.toString(object, ToStringStyle.DEFAULT_STYLE));
+    	if(LOGGER.isDebugEnabled()){
+	    	for (Object object : list) {
+	    		LOGGER.debug("	{}", ReflectionToStringBuilder.toString(object, ToStringStyle.DEFAULT_STYLE));
+	    	}
     	}
     	
         dto.session.close();

@@ -102,7 +102,7 @@ public class LoginManagedBean implements Serializable {
 	public void selecionarAno() {
 		this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
 		this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
-		periodo = "0"; 
+		periodo = "a"; 
 	}
 
 	public void selecionarPeriodo() throws IOException {

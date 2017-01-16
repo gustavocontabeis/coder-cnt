@@ -42,6 +42,7 @@ public class ExercicioManagedBean extends BaseManagedBean {
 		novo(null);
 		loadLazyModel();
 		getPopularComboEmpresa();
+		getPopularComboPlanoContas();
 	}
 
 	private void loadLazyModel() {
@@ -132,4 +133,19 @@ public class ExercicioManagedBean extends BaseManagedBean {
 		this.planosContas = planosContas;
 	}
 	
+	@Inject private PlanoContasDAO planoContasDAO;
+
+	private List<PlanoContas> planocontas;
+	public List<PlanoContas> getPopularComboPlanoContas() {
+		planocontas = planoContasDAO.buscarTodos();
+		return planocontas;
+	}
+	public List<PlanoContas> getPlanocontas() {
+		return planocontas;
+	}
+	public void setPlanocontas(List<PlanoContas> planocontas) {
+		this.planocontas = planocontas;
+	}
+
+
 }

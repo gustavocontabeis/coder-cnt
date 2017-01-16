@@ -18,16 +18,45 @@
 		</div>
 		<div align="center">
 			<h:outputText value="Razão: #{razaoManagedBean.razao.conta.nome}" />
-			<h:outputLabel value="De: " for="de" />
+		</div>
+		<div align="center">
+			<h:outputLabel value=" de " for="de" />
 			<h:outputText id="de" value="#{razaoManagedBean.razao.de}">
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</h:outputText>
-			<h:outputLabel value="Até: " for="ate" />
+			<h:outputLabel value=" até " for="ate" />
 			<h:outputText id="ate" value="#{razaoManagedBean.razao.ate}">
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</h:outputText>
 		</div>
-		<p:dataTable value="#{razaoManagedBean.razao.saldosRazao}" var="obj" columnClasses="texto, texto, texto, numerico, numerico" width="100%">
+		<div style="text-align: right;">
+			<h:outputText value="#{razaoManagedBean.razao.saldoInicial.vlrDebito}" styleClass="ui-outputlabel ui-widget">
+				<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR" />
+			</h:outputText> 
+		</div>
+		<div>
+			<h:outputText value="#{razaoManagedBean.razao.saldoInicial.vlrCredito}">
+				<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR" />
+			</h:outputText> 
+		</div>
+		<div style="text-align: right;" class="ui-outputlabel ui-widget">
+			<h:outputText value="#{razaoManagedBean.razao.saldoInicialContabil}" />
+		</div>
+		
+		<style type="text/css">
+			#saldosRazao>div{
+				color: red;
+				text-align: right;
+			}
+		</style>
+		<p:dataTable id="saldosRazao" value="#{razaoManagedBean.razao.saldosRazao}" var="obj" columnClasses="texto, texto, texto, numerico, numerico" width="100%"
+					emptyMessage="#{labels['cfg.table.empty']}">
+			<f:facet name="header">
+		        <h:outputText value="Saldo Inicial #{razaoManagedBean.razao.saldoInicialContabil}" />
+		    </f:facet>
+			<f:facet name="header">
+		        <h:outputText value="Saldo Final #{razaoManagedBean.razao.saldoFinalContabil}" />
+		    </f:facet>
 			<p:column width="30">
 				<f:facet name="header">
 					<h:outputText value="Cod." />

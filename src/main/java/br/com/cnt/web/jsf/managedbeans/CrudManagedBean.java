@@ -1,5 +1,6 @@
 package br.com.cnt.web.jsf.managedbeans;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -8,12 +9,14 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import br.com.cnt.model.dao.BaseDAO;
 import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.entity.BaseEntity;
+import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.utils.Filtro;
 
 public abstract class CrudManagedBean <T extends BaseEntity, D extends BaseDAO<T>> extends BaseManagedBean {
@@ -57,9 +60,13 @@ public abstract class CrudManagedBean <T extends BaseEntity, D extends BaseDAO<T
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-					Map<String, Object> filters) {
-				filtro = new Filtro(getEntity().getClass(), first, pageSize, sortField, sortOrder, filters);
+			public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder,	Map<String, Object> filters) {
+				T entity = getEntity();
+				if(entity == null){
+					entity = novo();
+					CrudManagedBean.this.entity = entity;
+				}
+				filtro = new Filtro<T>(CrudManagedBean.this.entity.getClass(), first, pageSize, sortField, sortOrder, filters);
 				dao = getDao();
 				setRowCount(dao.getQuantidade2(filtro));
 				return dao.buscar2(filtro);
@@ -84,42 +91,76 @@ public abstract class CrudManagedBean <T extends BaseEntity, D extends BaseDAO<T
 		};
 	}
 	
-	public abstract void novo(ActionEvent evt);
+	protected abstract T novo();
+
+	public void novo(ActionEvent evt){
+		this.entity = novo();
+	}
 	
 	public void salvar(ActionEvent evt) throws DaoException {
 		try {
-			salvarAntes(entity);
-			dao.salvar(entity);
-			salvarApos(entity);
-			message(null, "Registro salvo com sucesso.");
+			if(salvarAntes(entity)){
+				dao.salvar(entity);
+				salvarApos(entity);
+			}
 		} catch (Exception e) {
 			message(e);
 		}
 	}
 
-	protected void salvarAntes(T entity) {
-		
+	protected boolean salvarAntes(T entity) {
+		return true;
 	}
 	
 	protected void salvarApos(T entity) {
-		
+		message(null, "Registro salvo com sucesso.");
 	}
 	
 	public void excluir(ActionEvent evt) throws DaoException {
 		try {
-			excluirAntes(entity);
-			getDao().excluir(entity);
-			excluirApos(entity);
-			novo(null);
-			message(null, "Registro excluído com sucesso.");
+			if(excluirAntes(entity)){
+				getDao().excluir(entity);
+				excluirApos(entity);
+				novo(null);
+			}
 		} catch (Exception e) {
 			message(e);
 		}
 	}
 
-	private void excluirApos(T entity) {}
+	private boolean excluirAntes(T entity) {
+		return true;
+	}
+	
+	private void excluirApos(T entity) {
+		message(null, "Registro excluído com sucesso.");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void clonar(ActionEvent evt) {
+		try {
+			T t = (T) BeanUtils.cloneBean(entity);
+			t.setId(null);
+			this.entity = t;
+			clonarApos();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			message(e);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			message(e);
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			message(e);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			message(e);
+		}
+	}
 
-	private void excluirAntes(T entity) {}
+	protected void clonarApos() {
+		
+	}
 
 	protected abstract BaseDAO<T> getDao();
 	
