@@ -20,7 +20,7 @@ import javax.persistence.Table;
 		@NamedQuery(name="Configuracao-buscar", 
 				query="select obj from Configuracao obj where obj.id = :id"),
 		@NamedQuery(name="Configuracao-buscarPorChave", 
-		query="select obj from Configuracao obj where obj.chave = :id")
+		query="select obj from Configuracao obj where obj.chave = :chave")
 	})
 public class Configuracao extends BaseEntity {
 	

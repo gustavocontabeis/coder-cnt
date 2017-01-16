@@ -8,9 +8,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -20,19 +19,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.postgresql.translation.messages_bg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import br.com.cnt.model.dao.ConfiguracaoDAO;
+import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.dao.balanco.EmpresaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
 import br.com.cnt.model.dao.usuarios.UsuarioDAO;
+import br.com.cnt.model.dto.ConfiguracaoUsuarioDTO;
+import br.com.cnt.model.entity.Configuracao;
 import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.usuarios.Usuario;
-import br.com.cnt.model.utils.ConstantesComuns;
+import br.com.cnt.model.utils.ConfiguracaoUtil;
+import br.com.cnt.model.utils.JSONUtil;
 import br.com.tche.geradorcodigo.util.StringUtil;
-@Named @javax.enterprise.context.SessionScoped
-//@ManagedBean @SessionScoped
+
+@Named @SessionScoped
 public class LoginManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -49,28 +60,14 @@ public class LoginManagedBean implements Serializable {
 	
 	private List<Empresa> empresas;
 	private List<Exercicio> exercicios;
-	@Inject 
-	private EmpresaDAO empresaDAO;
-	@Inject 
-	private ExercicioDAO exercicioDAO;
-	@Inject 
-	private UsuarioDAO usuarioDAO;
+	
+	@Inject private EmpresaDAO empresaDAO;
+	@Inject private ExercicioDAO exercicioDAO;
+	@Inject private UsuarioDAO usuarioDAO;
+	@Inject private ConfiguracaoDAO configuracaoDAO;
 	
 	@PostConstruct
 	private void init(){
-		
-		//Desenv!!!
-		if(Boolean.FALSE){
-			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-			HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-			HttpSession session = request.getSession();
-			
-			if(session.getAttribute("usuario")==null){
-				Usuario usuario = usuarioDAO.buscarComPerfis("gustavo");
-				session.setAttribute("usuario", usuario);
-				this.usuario = usuario;
-			}
-		}
 		empresas = getPopularComboEmpresa();
 	}
 
@@ -78,8 +75,23 @@ public class LoginManagedBean implements Serializable {
 		return empresaDAO.buscarTodos();
 	}
 	
-	public void aoSelecionarEmpresa(){
+	public void aoSelecionarEmpresa() throws DaoException{
 		popularComboExercicio();
+	}
+	
+	public void salvarConfiguracao(ActionEvent evt) throws DaoException{
+		
+		ConfiguracaoUsuarioDTO config = new ConfiguracaoUsuarioDTO();
+		config.setEmpresa(empresa!=null?empresa.getId():null);
+		config.setExercicio(exercicio!=null?exercicio.getId():null);
+		config.setPeriodo(StringUtils.isNotBlank(periodo)?periodo:null);
+		
+		Gson create = new GsonBuilder().create();
+		String json = create.toJson(config);
+		
+		String key = String.format(ConfiguracaoUtil.CONFIG_USUARIO, usuario.getId());
+		configuracaoDAO.salvarConfiguracao(key, json);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Confuguração foi salva com sucesso."));
 	}
 	
 	public void popularComboExercicio(){
@@ -99,14 +111,8 @@ public class LoginManagedBean implements Serializable {
 		ate = null;
 	}
 	
-	public void selecionarAno() {
-		this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
-		this.ate = new GregorianCalendar(exercicio.getAno(), Calendar.DECEMBER, 31).getTime();
-		periodo = "a"; 
-	}
-
 	public void selecionarPeriodo() throws IOException {
-		if(!StringUtil.isBlank(periodo)){
+		if(exercicio!= null && !StringUtil.isBlank(periodo)){
 			switch (periodo) {
 			case "a":
 				this.de = new GregorianCalendar(exercicio.getAno(), Calendar.JANUARY, 1).getTime();
@@ -170,7 +176,7 @@ public class LoginManagedBean implements Serializable {
 		}
 	}
 
-	public void login(ActionEvent event) throws IOException {
+	public void login(ActionEvent event) throws IOException, DaoException {
 
 		Usuario usuario = usuarioDAO.buscarComPerfis(this.username);
 		
@@ -190,6 +196,7 @@ public class LoginManagedBean implements Serializable {
 			
 			this.usuario = usuario;
 			
+			buscarConfiguracoesUsuario();
 			
 			if(session.getAttribute("destino") != null){
 				HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
@@ -197,6 +204,8 @@ public class LoginManagedBean implements Serializable {
 				LOGGER.debug("Redirecionando para : "+ destino);
 				response.sendRedirect(destino);
 				session.removeAttribute("destino");
+			}else{
+				redirecionarPaginaInicial();
 			}
 			
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem vindo", username));
@@ -207,15 +216,30 @@ public class LoginManagedBean implements Serializable {
 		}
 
 	}
+
+	private void buscarConfiguracoesUsuario() throws DaoException, IOException {
+		
+		String chave = String.format(ConfiguracaoUtil.CONFIG_USUARIO, usuario.getId());
+		Configuracao config = configuracaoDAO.buscarPorChave(chave);
+		if(config != null){
+			ConfiguracaoUsuarioDTO configDTO = (ConfiguracaoUsuarioDTO) JSONUtil.toObject(config.getValor(), ConfiguracaoUsuarioDTO.class);
+			empresa = empresaDAO.buscar(configDTO.getEmpresa());
+			popularComboExercicio();
+			exercicio = exercicioDAO.buscar(configDTO.getExercicio());
+			periodo = configDTO.getPeriodo();
+			selecionarPeriodo();
+		}
+		
+	}
 	
-	public void loginDesenv(ActionEvent event) throws IOException {
+	public void loginDesenv(ActionEvent event) throws IOException, DaoException {
 		this.username = "gustavo";
 		this.password = "123";
 		login(null);
-		empresa = empresas.iterator().next();
-		popularComboExercicio();
-		exercicio = exercicios.iterator().next();
-		selecionarAno();
+//		empresa = empresas.iterator().next();
+//		popularComboExercicio();
+//		exercicio = exercicios.iterator().next();
+//		selecionarAno();
 	}
 	
 	private void redirecionarLogin() throws IOException {
@@ -223,6 +247,13 @@ public class LoginManagedBean implements Serializable {
 		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
 		HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
 		response.sendRedirect(request.getContextPath() + "/pages/login/login.jsf");
+	}
+
+	private void redirecionarPaginaInicial() throws IOException {
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+		HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+		response.sendRedirect(request.getContextPath() + "/pages/configuracoes/");
 	}
 
 	public void logout(ActionEvent event) throws IOException {
@@ -313,7 +344,5 @@ public class LoginManagedBean implements Serializable {
 	public void setPeriodo(String periodo) {
 		this.periodo = periodo;
 	}
-	
-	
 
 }

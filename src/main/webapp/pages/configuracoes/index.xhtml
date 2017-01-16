@@ -6,10 +6,10 @@
 	<ui:define name="pageTitle">..:: Configurações ::..</ui:define>
 
 	<ui:define name="body">
-		<p:messages />
+		<p:growl />
 		<h:form>
 			<p:focus />
-			<div class="ui-fluid">
+			<div class="">
 				<p:panelGrid id="pgConf" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10" >
 		
 					<p:outputLabel for="empresa" value="#{labels['conta.empresa']}" />
@@ -29,38 +29,45 @@
 						<f:converter converterId="baseEntityConverter"/>
 						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Exercicio" />
 						<f:attribute name="list" value="#{loginManagedBean.exercicios}" />
-						<p:ajax event="change" update="periodo,de,ate" listener="#{loginManagedBean.aoSelecionarExercicio}" />
+						<p:ajax event="change" update="periodo" listener="#{loginManagedBean.aoSelecionarExercicio}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="periodo" value="Período" />
-					<p:selectOneMenu id="periodo" value="#{loginManagedBean.periodo}" required="false">
-						<f:selectItem itemLabel="[Selecione]" />
+					<p:column>
+						<p:selectOneMenu id="periodo" value="#{loginManagedBean.periodo}" required="false">
+							<f:selectItem itemLabel="[Selecione]" />
+							
+							<f:selectItem itemValue="a" itemLabel="Anual" />
+							
+							<f:selectItem itemValue="1s" itemLabel="1º Semestre" />
+							<f:selectItem itemValue="2s" itemLabel="2º Semestre" />
+							
+							<f:selectItem itemValue="1t" itemLabel="1º Trimestre" />
+							<f:selectItem itemValue="2t" itemLabel="2º Trimestre" />
+							<f:selectItem itemValue="3t" itemLabel="3º Trimestre" />
+							<f:selectItem itemValue="4t" itemLabel="4º Trimestre" />
+							
+							<f:selectItem itemValue="1b" itemLabel="1º Bimestre" />
+							<f:selectItem itemValue="2b" itemLabel="2º Bimestre" />
+							<f:selectItem itemValue="3b" itemLabel="3º Bimestre" />			
+							<f:selectItem itemValue="4b" itemLabel="4º Bimestre" />
+							<f:selectItem itemValue="5b" itemLabel="5º Bimestre" />
+							<f:selectItem itemValue="6b" itemLabel="6º Bimestre" />
+							
+							<p:ajax event="change" update="@all" listener="#{loginManagedBean.selecionarPeriodo}" />
+						</p:selectOneMenu>
+
+						<span style="margin-left: 10px;">
+							<h:outputFormat value="Período de {0, date} até {1, date}">
+								<f:param value="#{loginManagedBean.de}" />
+								<f:param value="#{loginManagedBean.ate}" />
+							</h:outputFormat>
+						</span>
 						
-						<f:selectItem itemValue="a" itemLabel="Anual" />
-						
-						<f:selectItem itemValue="1s" itemLabel="1º Semestre" />
-						<f:selectItem itemValue="2s" itemLabel="2º Semestre" />
-						
-						<f:selectItem itemValue="1t" itemLabel="1º Trimestre" />
-						<f:selectItem itemValue="2t" itemLabel="2º Trimestre" />
-						<f:selectItem itemValue="3t" itemLabel="3º Trimestre" />
-						<f:selectItem itemValue="4t" itemLabel="4º Trimestre" />
-						
-						<f:selectItem itemValue="1b" itemLabel="1º Bimestre" />
-						<f:selectItem itemValue="2b" itemLabel="2º Bimestre" />
-						<f:selectItem itemValue="3b" itemLabel="3º Bimestre" />			
-						<f:selectItem itemValue="4b" itemLabel="4º Bimestre" />
-						<f:selectItem itemValue="5b" itemLabel="5º Bimestre" />
-						<f:selectItem itemValue="6b" itemLabel="6º Bimestre" />
-						
-						<p:ajax event="change" update="@all" listener="#{loginManagedBean.selecionarPeriodo}" />
-					</p:selectOneMenu>
+					</p:column>
 					
-					<p:outputLabel for="de" value="De" />
-					<p:calendar id="de" value="#{loginManagedBean.de}" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" disabled="true"/>
-					
-					<p:outputLabel for="ate" value="Até" />
-					<p:calendar id="ate" value="#{loginManagedBean.ate}" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" disabled="true" />
+					<p:column />
+					<p:commandButton id="salvarConfiguracao" actionListener="#{loginManagedBean.salvarConfiguracao}" value="Salvar esta configuração (opcional)" required="false" title="Sempre que você se logar, esta configuração estará selecionada." />
 					
 				</p:panelGrid>
 			</div>

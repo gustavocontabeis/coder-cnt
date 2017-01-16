@@ -7,10 +7,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 
-@ManagedBean
+//@ManagedBean
 //@ViewScoped
-@SessionScoped
+//@SessionScoped
+@Named @SessionScoped
 public class ConfigManagedBean extends BaseManagedBean {
 
 	private static final long serialVersionUID = 1L;

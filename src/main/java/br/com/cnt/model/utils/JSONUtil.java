@@ -14,8 +14,8 @@ public class JSONUtil {
 		return gson.toJson(imovel);
 	}
 
-	public static Object toObject(String json) {
-		return null;
+	public static Object toObject(String json, Class<?> classe) {
+		return gson.fromJson(json, classe);
 	}
 
 }
