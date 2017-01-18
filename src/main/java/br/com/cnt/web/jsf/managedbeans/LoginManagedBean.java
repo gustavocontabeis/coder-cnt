@@ -57,6 +57,7 @@ public class LoginManagedBean implements Serializable {
 	private Exercicio exercicio;
 	private Date de, ate;
 	private String periodo;
+	private String template = "desktop";
 	
 	private List<Empresa> empresas;
 	private List<Exercicio> exercicios;
@@ -343,6 +344,14 @@ public class LoginManagedBean implements Serializable {
 
 	public void setPeriodo(String periodo) {
 		this.periodo = periodo;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 
 }

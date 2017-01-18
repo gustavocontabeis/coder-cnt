@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
 
-<ui:composition template="/pages/templates/#{configManagedBean.template}.xhtml">
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
 
 	<ui:define name="pageTitle">..:: Configurações ::..</ui:define>
 
@@ -66,7 +66,21 @@
 						
 					</p:column>
 					
+					
+					<p:outputLabel for="template" value="Layout" />
+					<p:selectOneButton id="template" value="#{loginManagedBean.template}">
+							<p:ajax event="change" update="@all" immediate="true" />
+							<f:selectItem itemLabel="Desktop" itemValue="desktop" />
+							<f:selectItem itemLabel="Classic" itemValue="desktop-2" />
+							<f:selectItem itemLabel="Mobile" itemValue="mobile" />
+					</p:selectOneButton>
+					
+					
+					
+					
+					
 					<p:column />
+					
 					<p:commandButton id="salvarConfiguracao" actionListener="#{loginManagedBean.salvarConfiguracao}" value="Salvar esta configuração (opcional)" required="false" title="Sempre que você se logar, esta configuração estará selecionada." />
 					
 				</p:panelGrid>

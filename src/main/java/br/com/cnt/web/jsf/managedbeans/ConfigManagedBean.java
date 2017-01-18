@@ -18,7 +18,7 @@ public class ConfigManagedBean extends BaseManagedBean {
 	private static final long serialVersionUID = 1L;
 
 	private String fontSize = "11px";
-	private String template = "desktop";
+	private String template;
 	
 	private List<String[]> menu = new ArrayList<>();
 	
@@ -29,6 +29,9 @@ public class ConfigManagedBean extends BaseManagedBean {
 		menu.add(new String[]{});
 		menu.add(new String[]{});
 		menu.add(new String[]{});
+		//template = "desktop";
+		template = "desktop-2";
+		//template = "layout-classic";
 	}
 
 	public String getFontSize() {
