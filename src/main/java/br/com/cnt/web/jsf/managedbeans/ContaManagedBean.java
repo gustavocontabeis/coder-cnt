@@ -19,7 +19,6 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Empresa;
-import br.com.cnt.model.entity.balanco.Lancamento;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.ContaUtil;
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
 
-<ui:composition template="/pages/templates/#{configManagedBean.template}.xhtml">
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
 
 	<f:metadata>
         <f:viewParam name="id" value="#{lancamentoManagedBean.id}" converter="javax.faces.Long"/>
@@ -104,7 +104,9 @@
 				<div class="ui-g">
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
 						<p:outputLabel for="historico" value="#{labels['lancamento.historico']}" />
-						<p:inputTextarea id="historico" value="#{lancamentoManagedBean.lancamento.historico}" required="true" rows="5" cols="100" />
+						<p:inputTextarea id="historico" value="#{lancamentoManagedBean.lancamento.historico}" required="true" rows="5" cols="100"
+							completeMethod="#{lancamentoManagedBean.getPopularAutocompleteHistoricoPadrao}" >
+							</p:inputTextarea>
 				    </div>
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
 						<p:outputLabel for="valor" value="#{labels['lancamento.valor']}" />

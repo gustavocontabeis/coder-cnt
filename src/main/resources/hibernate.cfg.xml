@@ -48,12 +48,12 @@
     <property name="hibernate.hbm2ddl.import_files">/import.sql, /Usuario.sql, /Empresa.sql, /PlanoContas.sql, /Exercicio.sql, /Contas.sql, /Lancamento-teste-2.sql</property>
 	 -->    
     <property name="hibernate.hbm2ddl.import_files">
-    /import-hsql.sql, 
     /Usuario-postgres.sql, 
     /Empresa.sql, 
     /PlanoContas.sql, 
     /Exercicio-postgres.sql, 
-    /Contas-1-comercio.sql 
+    /Contas-1-comercio.sql, 
+    /import-hsql.sql
     </property>
     
     <!-- Echo all executed SQL to stdout -->
@@ -73,6 +73,7 @@
      <mapping class="br.com.cnt.model.entity.usuarios.PerfilAcesso" />  
 	 <mapping class="br.com.cnt.model.entity.usuarios.UsuarioPerfil" />
 	 <mapping class="br.com.cnt.model.entity.Configuracao" />
+	 <mapping class="br.com.cnt.model.entity.balanco.HistoricoPadrao" />
     
   </session-factory>
 </hibernate-configuration>

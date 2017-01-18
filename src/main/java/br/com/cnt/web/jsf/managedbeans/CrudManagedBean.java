@@ -16,7 +16,6 @@ import org.primefaces.model.SortOrder;
 import br.com.cnt.model.dao.BaseDAO;
 import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.entity.BaseEntity;
-import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.utils.Filtro;
 
 public abstract class CrudManagedBean <T extends BaseEntity, D extends BaseDAO<T>> extends BaseManagedBean {

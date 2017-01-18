@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 
-//@ManagedBean
-//@ViewScoped
-//@SessionScoped
-@Named @SessionScoped
+@Named 
+@SessionScoped
 public class ConfigManagedBean extends BaseManagedBean {
 
 	private static final long serialVersionUID = 1L;

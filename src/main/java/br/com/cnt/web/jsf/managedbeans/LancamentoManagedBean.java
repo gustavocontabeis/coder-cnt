@@ -18,10 +18,12 @@ import org.primefaces.model.SortOrder;
 import br.com.cnt.model.dao.DaoException;
 import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
+import br.com.cnt.model.dao.balanco.HistoricoPadraoDAO;
 import br.com.cnt.model.dao.balanco.LancamentoDAO;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
+import br.com.cnt.model.entity.balanco.HistoricoPadrao;
 import br.com.cnt.model.entity.balanco.Lancamento;
 import br.com.cnt.model.entity.balanco.LancamentoTipo;
 import br.com.cnt.model.utils.Filtro;
@@ -44,6 +46,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	@Inject private LancamentoDAO dao;
 	@Inject private ContaDAO contaDAO;
 	@Inject private ExercicioDAO exercicioDAO;
+	@Inject private HistoricoPadraoDAO historicoPadraoDAO;
 
 
 	@PostConstruct
@@ -185,6 +188,10 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	public List<Exercicio> getPopularComboExercicio() {
 		exercicios = exercicioDAO.buscarTodos();
 		return exercicios;
+	}
+
+	public List<String> getPopularAutocompleteHistoricoPadrao(String historico) throws DaoException {
+		return historicoPadraoDAO.buscarPorHistorico(historico);
 	}
 
 	public LancamentoTipo[] getPopularComboLancamentoTipo() {

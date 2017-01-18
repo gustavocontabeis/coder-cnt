@@ -7,7 +7,7 @@ public class ConfiguracaoUsuarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long empresa, exercicio;
-	private String periodo;
+	private String periodo, template;
 
 	public Long getEmpresa() {
 		return empresa;
@@ -31,6 +31,14 @@ public class ConfiguracaoUsuarioDTO implements Serializable {
 
 	public void setPeriodo(String periodo) {
 		this.periodo = periodo;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 	
 }

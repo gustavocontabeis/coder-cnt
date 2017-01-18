@@ -57,7 +57,7 @@ public class LoginManagedBean implements Serializable {
 	private Exercicio exercicio;
 	private Date de, ate;
 	private String periodo;
-	private String template = "desktop";
+	private String template = "desktop", fontSize = "12px";
 	
 	private List<Empresa> empresas;
 	private List<Exercicio> exercicios;
@@ -86,6 +86,7 @@ public class LoginManagedBean implements Serializable {
 		config.setEmpresa(empresa!=null?empresa.getId():null);
 		config.setExercicio(exercicio!=null?exercicio.getId():null);
 		config.setPeriodo(StringUtils.isNotBlank(periodo)?periodo:null);
+		config.setTemplate(template);
 		
 		Gson create = new GsonBuilder().create();
 		String json = create.toJson(config);
@@ -228,6 +229,7 @@ public class LoginManagedBean implements Serializable {
 			popularComboExercicio();
 			exercicio = exercicioDAO.buscar(configDTO.getExercicio());
 			periodo = configDTO.getPeriodo();
+			template = configDTO.getTemplate();
 			selecionarPeriodo();
 		}
 		
@@ -352,6 +354,14 @@ public class LoginManagedBean implements Serializable {
 
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+
+	public String getFontSize() {
+		return fontSize;
+	}
+
+	public void setFontSize(String fontSize) {
+		this.fontSize = fontSize;
 	}
 
 }
