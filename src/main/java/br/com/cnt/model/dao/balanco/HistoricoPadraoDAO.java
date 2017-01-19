@@ -25,7 +25,7 @@ public class HistoricoPadraoDAO extends BaseDAO<HistoricoPadrao> {
  	}
  	
  	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
- 	public List<String> buscarPorHistorico(String historico) throws DaoException {
+ 	public List<HistoricoPadrao> buscarPorHistorico(String historico) throws DaoException {
  		Session session = getSession();
  		Query query = session.getNamedQuery("HistoricoPadrao-buscarPorHistorico");
  		query.setString("historico", "%"+historico+"%");

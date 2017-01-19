@@ -54,7 +54,7 @@ public abstract class CrudManagedBean <T extends BaseEntity, D extends BaseDAO<T
 		}
 	}
 	
-	private void loadLazyModel() {
+	protected void loadLazyModel() {
 		model = new LazyDataModel<T>() {
 			private static final long serialVersionUID = 1L;
 

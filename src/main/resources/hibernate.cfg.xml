@@ -68,6 +68,7 @@
      <mapping class="br.com.cnt.model.entity.balanco.Empresa" />  
      <mapping class="br.com.cnt.model.entity.balanco.Exercicio" />  
      <mapping class="br.com.cnt.model.entity.balanco.Lancamento" />  
+     <mapping class="br.com.cnt.model.entity.balanco.LancamentoPadrao" />  
      <mapping class="br.com.cnt.model.entity.balanco.PlanoContas" />  
      <mapping class="br.com.cnt.model.entity.usuarios.Usuario" />  
      <mapping class="br.com.cnt.model.entity.usuarios.PerfilAcesso" />  

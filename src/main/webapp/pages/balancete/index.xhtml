@@ -67,13 +67,13 @@
 				<f:facet name="header">
 					<h:outputText value="Saldo Inicial" />
 				</f:facet>
-				<h:outputText value="#{obj.saldoInicialContabil}" styleClass="#{obj.conta.contaTipo} #{not obj.saldoInicialPositivo?'red':''}" />
+				<h:outputText value="#{obj.saldoInicialContabil}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel} #{not obj.saldoInicialPositivo?'red':''}" />
 			</p:column>
 			<p:column style="text-align: right;">
 				<f:facet name="header">
 					<h:outputText value="Débito" />
 				</f:facet>
-				<h:outputText value="#{obj.debito}" styleClass="#{obj.conta.contaTipo}">
+				<h:outputText value="#{obj.debito}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}">
 					<f:convertNumber minFractionDigits="2" groupingUsed="true" />
 				</h:outputText>
 			</p:column>
@@ -81,7 +81,7 @@
 				<f:facet name="header">
 					<h:outputText value="Credito" />
 				</f:facet>
-				<h:outputText value="#{obj.credito}" styleClass="#{obj.conta.contaTipo}">
+				<h:outputText value="#{obj.credito}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}">
 					<f:convertNumber minFractionDigits="2" groupingUsed="true" />
 				</h:outputText>
 			</p:column>
@@ -89,7 +89,7 @@
 				<f:facet name="header">
 					<h:outputText value="Saldo Final" />
 				</f:facet>
-				<h:outputText value="#{obj.saldoFinalContabil}" styleClass="#{obj.conta.contaTipo} #{not obj.saldoFinalPositivo?'red':''}" />
+				<h:outputText value="#{obj.saldoFinalContabil}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel} #{not obj.saldoFinalPositivo?'red':''}" />
 			</p:column>
 			<p:column width="40">
 				<f:facet name="header">

@@ -21,7 +21,7 @@ import br.com.cnt.model.entity.BaseEntity;
 	})
 @NamedQueries(value={
 		@NamedQuery(name="HistoricoPadrao-buscar", query="select obj from HistoricoPadrao obj where obj.id = :id"),
-		@NamedQuery(name="HistoricoPadrao-buscarPorHistorico", query="select obj.historico from HistoricoPadrao obj where upper(obj.historico) like upper(:historico)"),
+		@NamedQuery(name="HistoricoPadrao-buscarPorHistorico", query="select obj from HistoricoPadrao obj where upper(obj.historico) like upper(:historico)"),
 })
 public class HistoricoPadrao extends BaseEntity {
 	

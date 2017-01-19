@@ -191,7 +191,12 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	}
 
 	public List<String> getPopularAutocompleteHistoricoPadrao(String historico) throws DaoException {
-		return historicoPadraoDAO.buscarPorHistorico(historico);
+		List<HistoricoPadrao> buscarPorHistorico = historicoPadraoDAO.buscarPorHistorico(historico);
+		List<String>list=new ArrayList<>();
+		for (HistoricoPadrao historicoPadrao : buscarPorHistorico) {
+			list.add(historicoPadrao.getHistorico());
+		}
+		return list;
 	}
 
 	public LancamentoTipo[] getPopularComboLancamentoTipo() {
