@@ -99,10 +99,11 @@ public abstract class CrudManagedBean <T extends BaseEntity, D extends BaseDAO<T
 	public void salvar(ActionEvent evt) throws DaoException {
 		try {
 			if(salvarAntes(entity)){
-				dao.salvar(entity);
+				getDao().salvar(entity);
 				salvarApos(entity);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			message(e);
 		}
 	}

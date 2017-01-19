@@ -52,8 +52,9 @@
     /Empresa.sql, 
     /PlanoContas.sql, 
     /Exercicio-postgres.sql, 
-    /Contas-1-comercio.sql, 
-    /import-hsql.sql
+    /Contas-1-comercio.sql,
+    /import-hsql.sql,
+    /LancamentoPadrao.sql, 
     </property>
     
     <!-- Echo all executed SQL to stdout -->

@@ -32,13 +32,6 @@
 				<div class="ui-g">
 				    <div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="debito" value="#{labels['lancamentoPadrao.debito']}" />
-						<p:selectOneMenu id="debitox" value="#{lancamentoPadraoManagedBean.entity.debito}" required="false" rendered="false">
-							<f:selectItem itemLabel="[Selecione]" />
-								<f:selectItems value="#{lancamentoPadraoManagedBean.contas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
-							<f:converter converterId="baseEntityConverter" />
-							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
-							<f:attribute name="list" value="#{lancamentoPadraoManagedBean.contas}" />
-						</p:selectOneMenu>
 						<p:autoComplete id="debito" value="#{lancamentoPadraoManagedBean.entity.debito}" completeMethod="#{lancamentoPadraoManagedBean.buscarConta}"
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true"
 		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
@@ -57,13 +50,6 @@
 				    </div>
 				    <div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="credito" value="#{labels['lancamentoPadrao.credito']}" />
-						<p:selectOneMenu id="creditoX" value="#{lancamentoPadraoManagedBean.entity.credito}" rendered="false">
-							<f:selectItem itemLabel="[Selecione]" />
-							<f:selectItems value="#{lancamentoPadraoManagedBean.popularComboConta}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
-							<f:converter converterId="baseEntityConverter" />
-							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
-							<f:attribute name="list" value="#{lancamentoPadraoManagedBean.contas}" />
-						</p:selectOneMenu>
 						<p:autoComplete id="credito" value="#{lancamentoPadraoManagedBean.entity.credito}" completeMethod="#{lancamentoPadraoManagedBean.buscarConta}"
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" 
 		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
@@ -85,7 +71,8 @@
 				<div class="ui-g">
 				    <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
 						<p:outputLabel for="historicoPadrao" value="#{labels['lancamentoPadrao.historicoPadrao']}" />
-						<p:autoComplete id="historicoPadrao" value="#{lancamentoPadraoManagedBean.entity.historicoPadrao}" completeMethod="#{lancamentoPadraoManagedBean.getPopularAutocompleteHistoricoPadrao}"
+						<p:autoComplete id="historicoPadrao" value="#{lancamentoPadraoManagedBean.entity.historicoPadrao}" 
+								completeMethod="#{lancamentoPadraoManagedBean.getPopularAutocompleteHistoricoPadrao}"
 		                        var="obj" itemLabel="#{obj.historico}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" 
 		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.HistoricoPadrao" />
@@ -113,17 +100,18 @@
 		<h:form id="lancamentoPadraoList">
 			<p:dataTable var="item" value="#{lancamentoPadraoManagedBean.model}" emptyMessage="#{labels['cfg.table.empty']}" 
 						paginator="true" rows="#{labels['cfg.table.rows']}" paginatorTemplate="#{labels['cfg.table.template']}"
-				rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}" 
-				selectionMode="single" 
-				selection="#{lancamentoPadraoManagedBean.entity}" rowKey="#{item.id}" lazy="true" reflow="true">
+						rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}" 
+						selectionMode="single" rowKey="#{item.id}" lazy="true" reflow="true"
+						selection="#{lancamentoPadraoManagedBean.entity}" 
+				>
 
 				<p:ajax event="rowSelect" update="@all" reflow="true" />
 
-				<p:column headerText="#{labels['lancamentoPadrao.id']}" width="40" sortBy="#{item.id}">
+				<p:column headerText="#{labels['lancamentoPadrao.id']}">
 					<h:outputText value="#{item.id}" />
 				</p:column>
 
-				<p:column headerText="#{labels['lancamentoPadrao.nome']}" width="60" sortBy="#{item.nome}">
+				<p:column headerText="#{labels['lancamentoPadrao.nome']}">
 					<h:outputText value="#{item.nome}" />
 				</p:column>
 
@@ -135,13 +123,13 @@
 					<h:outputText value="#{item.credito.estrutura}-#{item.credito.nome}" />
 				</p:column>
 
-				<p:column headerText="#{labels['lancamentoPadrao.historico']}">
-					<h:outputText value="#{item.historico.historico}" />
+				<p:column headerText="#{labels['lancamentoPadrao.historicoPadrao']}">
+					<h:outputText value="#{item.historicoPadrao.historico}" />
 				</p:column>
 
 			</p:dataTable>
 		</h:form>
-		
+
 	</ui:define>
 
 </ui:composition>

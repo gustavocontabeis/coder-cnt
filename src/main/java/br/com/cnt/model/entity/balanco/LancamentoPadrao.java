@@ -3,6 +3,7 @@ package br.com.cnt.model.entity.balanco;
 
 import static javax.persistence.FetchType.LAZY;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -27,7 +28,12 @@ import br.com.cnt.model.entity.BaseEntity;
 			@Index(name="INDEX_LANCAMENTO_PADRAO_NOME", columnList = "NOME")
 	})
 @NamedQueries(value={
-		@NamedQuery(name="LancamentoPadrao-buscar", query="select obj from LancamentoPadrao obj where obj.id = :id"),
+		@NamedQuery(name="LancamentoPadrao-buscar", query=
+				"select obj from LancamentoPadrao obj "
+				+ "inner join fetch obj.debito deb "
+				+ "inner join fetch obj.credito cred "
+				+ "inner join fetch obj.historicoPadrao hp "
+				+ "where obj.id = :id"),
 		@NamedQuery(name="LancamentoPadrao-buscarPorNome", query="select obj from LancamentoPadrao obj where obj.nome like :nome"),
 })
 public class LancamentoPadrao extends BaseEntity {
@@ -44,15 +50,15 @@ public class LancamentoPadrao extends BaseEntity {
  	@Column(name="NOME", nullable=false, length=60)
  	private String nome;
  
- 	@ManyToOne(targetEntity=Conta.class, fetch=LAZY) 
+ 	@ManyToOne(fetch=LAZY, cascade={CascadeType.DETACH}) 
  	@JoinColumn(name="DEBITO", nullable=true, foreignKey = @ForeignKey(name="FK_LANCAMENTO_PADRAO_DEBITO"))
  	private Conta debito;
  
- 	@ManyToOne(targetEntity=Conta.class, fetch=LAZY) 
+ 	@ManyToOne(fetch=LAZY, cascade={CascadeType.DETACH}) 
  	@JoinColumn(name="CREDITO", nullable=true, foreignKey = @ForeignKey(name="FK_LANCAMENTO_PADRAO_CREDITO"))
  	private Conta credito;
  
- 	@ManyToOne(targetEntity=Conta.class, fetch=LAZY) 
+ 	@ManyToOne(fetch=LAZY, cascade={CascadeType.DETACH}) 
  	@JoinColumn(name="ID_HISTORICO_PADRAO", nullable=true, foreignKey = @ForeignKey(name="FK_LANCAMENTO_PADRAO_HISTORICO_PADRAO"))
  	private HistoricoPadrao historicoPadrao;
  
