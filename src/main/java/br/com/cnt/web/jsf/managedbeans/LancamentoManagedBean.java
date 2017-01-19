@@ -12,6 +12,7 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -20,16 +21,19 @@ import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
 import br.com.cnt.model.dao.balanco.HistoricoPadraoDAO;
 import br.com.cnt.model.dao.balanco.LancamentoDAO;
+import br.com.cnt.model.dao.balanco.LancamentoPadraoDAO;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.HistoricoPadrao;
 import br.com.cnt.model.entity.balanco.Lancamento;
+import br.com.cnt.model.entity.balanco.LancamentoPadrao;
 import br.com.cnt.model.entity.balanco.LancamentoTipo;
 import br.com.cnt.model.utils.Filtro;
 
 //@ManagedBean @ViewScoped
-@javax.inject.Named @javax.faces.view.ViewScoped
+@javax.inject.Named
+@javax.faces.view.ViewScoped
 public class LancamentoManagedBean extends BaseManagedBean {
 
 	/**
@@ -42,12 +46,18 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	private List<Conta> contas;
 	private List<Exercicio> exercicios;
 	private List<Lancamento> lancamentos;
-	
-	@Inject private LancamentoDAO dao;
-	@Inject private ContaDAO contaDAO;
-	@Inject private ExercicioDAO exercicioDAO;
-	@Inject private HistoricoPadraoDAO historicoPadraoDAO;
+	private LancamentoPadrao lancamentoPadrao;
 
+	@Inject
+	private LancamentoDAO dao;
+	@Inject
+	private LancamentoPadraoDAO lancamentoPadraoDAO;
+	@Inject
+	private ContaDAO contaDAO;
+	@Inject
+	private ExercicioDAO exercicioDAO;
+	@Inject
+	private HistoricoPadraoDAO historicoPadraoDAO;
 
 	@PostConstruct
 	private void init() {
@@ -58,14 +68,17 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	}
 
 	private Long id;
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public void listener(ComponentSystemEvent evt) throws AbortProcessingException{
-		if(id != null){
+
+	public void listener(ComponentSystemEvent evt) throws AbortProcessingException {
+		if (id != null) {
 			try {
 				lancamento = dao.buscar(new Long(id));
 			} catch (NumberFormatException e) {
@@ -78,39 +91,43 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	private void loadLazyModel() {
 		model = new LazyDataModel<Lancamento>() {
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			public List<Lancamento> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+			public List<Lancamento> load(int first, int pageSize, String sortField, SortOrder sortOrder,
+					Map<String, Object> filters) {
 				filtro = new Filtro<Lancamento>(Lancamento.class, first, pageSize, sortField, sortOrder, filters);
 				setRowCount(dao.getQuantidade2(filtro));
 				return dao.buscar2(filtro);
 			}
-		    public Lancamento getRowData(String rowKey) {
-		    	Lancamento obj = new Lancamento();
-		    	obj.setId(new Long(rowKey));
-		    	 try {
+
+			public Lancamento getRowData(String rowKey) {
+				Lancamento obj = new Lancamento();
+				obj.setId(new Long(rowKey));
+				try {
 					obj = dao.buscar(new Long(rowKey));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				}
-		    	return obj;
-		    }
-		    public Object getRowKey(Lancamento object) {
-		    	return String.valueOf(object.getId());
-		    }
+				return obj;
+			}
+
+			public Object getRowKey(Lancamento object) {
+				return String.valueOf(object.getId());
+			}
 		};
 	}
-	
-	public List<Conta> buscarConta(String param){
+
+	public List<Conta> buscarConta(String param) {
 		Map<String, Object> filters = new HashMap<String, Object>();
-		if(StringUtils.isNotBlank(param)){
-			
-			if(param.length()>=2 && param.substring(0, 2).matches("\\d\\.")){
-				filters.put("estrutura", param+"%");
-			}else if(param.matches("\\d*.?")){
-				filters.put("id", new Long(param)); 
-			}else if(param.matches("\\d\\.\\d\\.\\d\\.\\d{2}\\.\\d{2}\\.\\d{2}\\.\\d{2}")){
+		if (StringUtils.isNotBlank(param)) {
+
+			if (param.length() >= 2 && param.substring(0, 2).matches("\\d\\.")) {
+				filters.put("estrutura", param + "%");
+			} else if (param.matches("\\d*.?")) {
+				filters.put("id", new Long(param));
+			} else if (param.matches("\\d\\.\\d\\.\\d\\.\\d{2}\\.\\d{2}\\.\\d{2}\\.\\d{2}")) {
 				filters.put("estrutura", param);
-			}else{
+			} else {
 				filters.put("nome", param);
 			}
 			filters.put("contaTipo", ContaTipo.ANALITICA);
@@ -119,7 +136,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 		}
 		return new ArrayList<Conta>();
 	}
-	
+
 	public void novo(ActionEvent evt) {
 		lancamento = new Lancamento();
 		lancamento.setExercicio(loginBean.getExercicio());
@@ -140,10 +157,10 @@ public class LancamentoManagedBean extends BaseManagedBean {
 
 	public void salvar(ActionEvent evt) throws DaoException {
 		try {
-			
-			if(lancamento.getDebito()!=null&&lancamento.getCredito()!=null){
+
+			if (lancamento.getDebito() != null && lancamento.getCredito() != null) {
 				lancamento.setLancamentoTipo(LancamentoTipo.SIMPLES);
-			}else{
+			} else {
 				lancamento.setLancamentoTipo(LancamentoTipo.COMPOSTO);
 			}
 			dao.salvar(lancamento);
@@ -152,7 +169,6 @@ public class LancamentoManagedBean extends BaseManagedBean {
 			message(e);
 		}
 	}
-
 
 	public void excluir(ActionEvent evt) throws DaoException {
 		try {
@@ -179,7 +195,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	public void setModel(LazyDataModel<Lancamento> model) {
 		this.model = model;
 	}
-	
+
 	public List<Conta> getPopularComboConta() {
 		contas = contaDAO.buscarTodos();
 		return contas;
@@ -191,12 +207,28 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	}
 
 	public List<String> getPopularAutocompleteHistoricoPadrao(String historico) throws DaoException {
-		List<HistoricoPadrao> buscarPorHistorico = historicoPadraoDAO.buscarPorHistorico(historico);
-		List<String>list=new ArrayList<>();
-		for (HistoricoPadrao historicoPadrao : buscarPorHistorico) {
-			list.add(historicoPadrao.getHistorico());
+		if (StringUtils.isNotEmpty(historico) && historico.length() <= 6) {
+			List<HistoricoPadrao> buscarPorHistorico = historicoPadraoDAO.buscarPorHistorico(historico);
+			List<String> list = new ArrayList<>();
+			for (HistoricoPadrao historicoPadrao : buscarPorHistorico) {
+				list.add(historicoPadrao.getHistorico());
+			}
+			return list;
+		} else {
+			return null;
 		}
-		return list;
+	}
+
+	public List<LancamentoPadrao> getPopularAutocompleteLancamentoPadrao(String nome) throws DaoException {
+		List<LancamentoPadrao> buscarPorNome = lancamentoPadraoDAO.buscarPorNome(nome);
+		return buscarPorNome;
+	}
+
+	public void onItemSelect(SelectEvent event) throws DaoException {
+		lancamentoPadrao = lancamentoPadraoDAO.buscar(lancamentoPadrao.getId());
+		lancamento.setDebito(lancamentoPadrao.getDebito());
+		lancamento.setCredito(lancamentoPadrao.getCredito());
+		lancamento.setHistorico(lancamentoPadrao.getHistoricoPadrao().getHistorico());
 	}
 
 	public LancamentoTipo[] getPopularComboLancamentoTipo() {
@@ -219,5 +251,12 @@ public class LancamentoManagedBean extends BaseManagedBean {
 		this.exercicios = exercicios;
 	}
 
-}
+	public LancamentoPadrao getLancamentoPadrao() {
+		return lancamentoPadrao;
+	}
 
+	public void setLancamentoPadrao(LancamentoPadrao lancamentoPadrao) {
+		this.lancamentoPadrao = lancamentoPadrao;
+	}
+
+}

@@ -32,7 +32,7 @@ public class LancamentoPadraoDAO extends BaseDAO<LancamentoPadrao> {
 	public List<LancamentoPadrao> buscarPorNome(String nome) throws DaoException {
  		Session session = getSession();
  		Query query = session.getNamedQuery("LancamentoPadrao-buscarPorNome");
- 		query.setString("nome", nome);
+ 		query.setString("nome", "%"+nome+"%");
  		List resultList = query.getResultList();
 		session.close();
 		return resultList;

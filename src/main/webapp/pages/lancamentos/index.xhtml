@@ -16,11 +16,20 @@
 			border: solid 1px red;
 		}
 	</style>
+	<script type="text/javascript">
+		function historico(){
+			console.log('historico');
+			$('#lancamento-historico').focus();
+			var value = $('#lancamento-historico').val();
+			console.log(value);
+		}
+	</script>
 		<p:growl />
 		<h:form id="lancamento">
 			<h:inputHidden id="idHidden" value="#{lancamentoManagedBean.lancamento.id}" />		
 			<div class="ui-fluid">
 				<div class="ui-g">
+					<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
 						<p:outputLabel for="id" value="#{labels['lancamento.id']}" />
 						<p:inputText id="id" value="#{lancamentoManagedBean.lancamento.id}" disabled="true" />
@@ -35,29 +44,35 @@
 							<f:attribute name="list" value="#{lancamentoManagedBean.exercicios}" />
 						</p:selectOneMenu>
 					</div>
-					<div class="ui-g-12 ui-md-0 ui-lg-6"></div>
+					<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				</div>
 
 				<div class="ui-g">
+					<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
 						<p:outputLabel for="date" value="#{labels['lancamento.date']}" />
 						<p:calendar id="date" value="#{lancamentoManagedBean.lancamento.date}" required="true" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" mask="99/99/9999" mindate="#{lancamentoManagedBean.loginBean.de}" maxdate="#{lancamentoManagedBean.loginBean.ate}"/>
 				    </div>
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
+				    	<p:outputLabel for="lancamentoPadrao" value="Lançamento padrão" />
+						<p:autoComplete id="lancamentoPadrao" value="#{lancamentoManagedBean.lancamentoPadrao}" completeMethod="#{lancamentoManagedBean.getPopularAutocompleteLancamentoPadrao}"
+		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true"
+		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
+		                        <p:ajax event="itemSelect" listener="#{lancamentoManagedBean.onItemSelect}" update="debito,credito,historico" onsuccess="historico()" />
+								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.LancamentoPadrao" />
+								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.LancamentoPadraoDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.nome}" />
+				            </p:column>
+				        </p:autoComplete>
 				    </div>
-				    <div class="ui-g-12 ui-md-0 ui-lg-6"></div>
+				    <div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				</div>
 				    
 				<div class="ui-g">
+					<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				    <div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="debito" value="#{labels['lancamento.debito']}" />
-						<p:selectOneMenu id="debitox" value="#{lancamentoManagedBean.lancamento.debito}" required="false" rendered="false">
-							<f:selectItem itemLabel="[Selecione]" />
-							<f:selectItems value="#{lancamentoManagedBean.contas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
-							<f:converter converterId="baseEntityConverter" />
-							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
-							<f:attribute name="list" value="#{lancamentoManagedBean.contas}" />
-						</p:selectOneMenu>
 						<p:autoComplete id="debito" value="#{lancamentoManagedBean.lancamento.debito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true"
 		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
@@ -99,9 +114,11 @@
 				            </p:column>
 				        </p:autoComplete>
 				    </div>
+				    <div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				</div>
 			
 				<div class="ui-g">
+					<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
 						<p:outputLabel for="historico" value="#{labels['lancamento.historico']}" />
 						<p:inputTextarea id="historico" value="#{lancamentoManagedBean.lancamento.historico}" required="true" rows="5" cols="100"
@@ -118,6 +135,7 @@
 						dir="RTL"
 						/>
 				    </div>
+				    <div class="ui-g-12 ui-md-0 ui-lg-3"></div>
 				</div>
 				    
 			</div>
@@ -173,7 +191,17 @@
 
 			</p:dataTable>
 		</h:form>
-		
+		<script type="text/javascript">
+			$('#lancamento-historico').keypress(function(event) {
+				console.log('key! '+event.which);
+				  if (event.which == 0) {
+					console.log('tab!');
+				    event.preventDefault();
+				    this.value = this.value + "\n";
+				    console.log(this.value.indexOf('_'));
+				  }
+			});
+		</script>
 	</ui:define>
 
 </ui:composition>

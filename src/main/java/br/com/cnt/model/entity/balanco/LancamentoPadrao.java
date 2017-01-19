@@ -34,7 +34,7 @@ import br.com.cnt.model.entity.BaseEntity;
 				+ "inner join fetch obj.credito cred "
 				+ "inner join fetch obj.historicoPadrao hp "
 				+ "where obj.id = :id"),
-		@NamedQuery(name="LancamentoPadrao-buscarPorNome", query="select obj from LancamentoPadrao obj where obj.nome like :nome"),
+		@NamedQuery(name="LancamentoPadrao-buscarPorNome", query="select obj from LancamentoPadrao obj where upper(obj.nome) like upper(:nome)"),
 })
 public class LancamentoPadrao extends BaseEntity {
 	
