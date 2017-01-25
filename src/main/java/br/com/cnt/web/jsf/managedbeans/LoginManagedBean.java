@@ -57,7 +57,7 @@ public class LoginManagedBean implements Serializable {
 	private Exercicio exercicio;
 	private Date de, ate;
 	private String periodo;
-	private String template = "desktop", fontSize = "12px";
+	private String template = "layout-1", fontSize = "12px";
 	
 	private List<Empresa> empresas;
 	private List<Exercicio> exercicios;

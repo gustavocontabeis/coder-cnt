@@ -13,11 +13,10 @@
 	<ui:define name="body">
 		<p:messages />
 		<div align="center">
-			<h:outputText value="Empresa: " />
-			<h:outputText value="#{razaoManagedBean.razao.exercicio.empresa.razaoSocial}" />
+			<h:outputText value="Razão da conta: #{razaoManagedBean.razao.conta.nome}" />
 		</div>
 		<div align="center">
-			<h:outputText value="Razão: #{razaoManagedBean.razao.conta.nome}" />
+			<h:outputText value="#{razaoManagedBean.razao.exercicio.empresa.razaoSocial}" />
 		</div>
 		<div align="center">
 			<h:outputLabel value=" de " for="de" />
@@ -29,6 +28,7 @@
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</h:outputText>
 		</div>
+		<br/>
 		<style type="text/css">
 			.red{
 				color: red;
