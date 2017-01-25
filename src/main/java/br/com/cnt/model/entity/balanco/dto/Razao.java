@@ -19,6 +19,7 @@ public class Razao implements Serializable {
 	private Conta conta;
 	private Date de, ate;
 	private SaldoRazao saldoInicial;
+	private BigDecimal saldoFinal;
 	private List<SaldoRazao>saldosRazao;
 	
 	public String getSaldoInicialContabil(){
@@ -26,16 +27,17 @@ public class Razao implements Serializable {
 		return ContaUtil.getValorContabil(subtract, conta.getContaOrigem());
 	}
 	
-	public String getSaldoFinalContabil(){
-		
+	public boolean isSaldoInicialPositivo() {
 		BigDecimal subtract = saldoInicial.getVlrDebito().subtract(saldoInicial.getVlrCredito());
-		
-		for(SaldoRazao sr : saldosRazao){
-			sr.getVlrDebito();
-			sr.getVlrCredito();
-		}
-		
-		return ContaUtil.getValorContabil(subtract, conta.getContaOrigem());
+		return ContaUtil.isValorContabilPositivo(subtract.floatValue(), conta.getContaOrigem());
+	}
+	
+	public String getSaldoFinalContabil(){
+		return ContaUtil.getValorContabil(saldoFinal, conta.getContaOrigem());
+	}
+	
+	public boolean isSaldoFinalPositivo(){
+		return ContaUtil.isValorContabilPositivo(saldoFinal.floatValue(), conta.getContaOrigem());
 	}
 	
 	public Exercicio getExercicio() {
@@ -73,6 +75,14 @@ public class Razao implements Serializable {
 	}
 	public void setSaldoInicial(SaldoRazao saldoInicial) {
 		this.saldoInicial = saldoInicial;
+	}
+
+	public BigDecimal getSaldoFinal() {
+		return saldoFinal;
+	}
+
+	public void setSaldoFinal(BigDecimal saldoFinal) {
+		this.saldoFinal = saldoFinal;
 	}
 
 }

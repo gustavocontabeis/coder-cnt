@@ -182,10 +182,13 @@ public class LoginManagedBean implements Serializable {
 
 		Usuario usuario = usuarioDAO.buscarComPerfis(this.username);
 		
+		String msg = "Login invalido";
+		
 		if(usuario == null){
 			LOGGER.debug("Usuario {} não confere.", username);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login inválido", "Login inválido"));
-			redirecionarLogin();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+			redirecionarLogin(msg);
+			return;
 		}
 		
 		if (this.password.equals(usuario.getSenha())) {
@@ -213,8 +216,8 @@ public class LoginManagedBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem vindo", username));
 		}else{
 			LOGGER.debug("Usuario {} e senha {} não conferem.", username, password);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login inválido", "Login inválido"));
-			redirecionarLogin();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+			redirecionarLogin(msg);
 		}
 
 	}
@@ -245,11 +248,11 @@ public class LoginManagedBean implements Serializable {
 //		selecionarAno();
 	}
 	
-	private void redirecionarLogin() throws IOException {
+	private void redirecionarLogin(String msg) throws IOException {
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
 		HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-		response.sendRedirect(request.getContextPath() + "/pages/login/login.jsf");
+		response.sendRedirect(request.getContextPath() + "/pages/login/login.jsf"+(StringUtils.isNotBlank(msg)?"?msg="+msg:""));
 	}
 
 	private void redirecionarPaginaInicial() throws IOException {

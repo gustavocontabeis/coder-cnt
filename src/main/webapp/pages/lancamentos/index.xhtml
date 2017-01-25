@@ -141,8 +141,8 @@
 			</div>
 			<p:toolbar>
 				<p:toolbarGroup>
-					<p:commandButton actionListener="#{lancamentoManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty lancamentoManagedBean.lancamento.id}" />
-					<p:commandButton actionListener="#{lancamentoManagedBean.salvar}" value="Salvar" update="@all" />
+					<p:commandButton id="novo" actionListener="#{lancamentoManagedBean.novo}" value="Novo" update="@all" disabled="#{empty lancamentoManagedBean.lancamento.id}" oncomplete="$(function(){PrimeFaces.focus('lancamento-date');});" />
+					<p:commandButton id="salvar" actionListener="#{lancamentoManagedBean.salvar}" value="Salvar" update="@form,lancamentoList" oncomplete="$(function(){PrimeFaces.focus('lancamento-novo');});" />
 					<p:commandButton actionListener="#{lancamentoManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty lancamentoManagedBean.lancamento.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
 					<p:commandButton actionListener="#{lancamentoManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty lancamentoManagedBean.lancamento.id}" />
 				</p:toolbarGroup>

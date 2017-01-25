@@ -29,33 +29,25 @@
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</h:outputText>
 		</div>
-		<div style="text-align: right;">
-			<h:outputText value="#{razaoManagedBean.razao.saldoInicial.vlrDebito}" styleClass="ui-outputlabel ui-widget">
-				<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR" />
-			</h:outputText> 
-		</div>
-		<div>
-			<h:outputText value="#{razaoManagedBean.razao.saldoInicial.vlrCredito}">
-				<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR" />
-			</h:outputText> 
-		</div>
-		<div style="text-align: right;" class="ui-outputlabel ui-widget">
-			<h:outputText value="#{razaoManagedBean.razao.saldoInicialContabil}" />
-		</div>
-		
 		<style type="text/css">
-			#saldosRazao>div{
+			.red{
 				color: red;
+			}
+			#saldosRazao>div.ui-datatable-header{
+				text-align: right;
+			}
+			#saldosRazao>div.ui-datatable-footer{
 				text-align: right;
 			}
 		</style>
 		<p:dataTable id="saldosRazao" value="#{razaoManagedBean.razao.saldosRazao}" var="obj" columnClasses="texto, texto, texto, numerico, numerico" width="100%"
 					emptyMessage="#{labels['cfg.table.empty']}">
 			<f:facet name="header">
-		        <h:outputText value="Saldo Inicial #{razaoManagedBean.razao.saldoInicialContabil}" />
+		        <h:outputText value="Saldo Inicial #{razaoManagedBean.razao.saldoInicialContabil}" styleClass="#{razaoManagedBean.razao.saldoInicialPositivo?'':'red'}" />
+		        
 		    </f:facet>
-			<f:facet name="header">
-		        <h:outputText value="Saldo Final #{razaoManagedBean.razao.saldoFinalContabil}" />
+			<f:facet name="footer">
+		        <h:outputText value="Saldo Final #{razaoManagedBean.razao.saldoFinalContabil}" styleClass="#{razaoManagedBean.razao.saldoFinalPositivo?'':'red'}" />
 		    </f:facet>
 			<p:column width="30">
 				<f:facet name="header">

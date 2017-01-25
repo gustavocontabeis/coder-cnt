@@ -140,6 +140,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	public void novo(ActionEvent evt) {
 		lancamento = new Lancamento();
 		lancamento.setExercicio(loginBean.getExercicio());
+		lancamentoPadrao = null;
 	}
 
 	public void clonar(ActionEvent evt) {
