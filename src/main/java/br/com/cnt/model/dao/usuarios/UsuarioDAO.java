@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -25,26 +26,34 @@ public class UsuarioDAO extends BaseDAOSerializable<Usuario> {
 	}
 
 	public Usuario buscarComPerfis(Long id) {
-		//new Usuario().getUsuarioPerfis().get(0).getPerfil()
 		Session session = getSession();
 		Query query = session.getNamedQuery("Usuario.getUsuarioComPerfis");
 		query.setParameter("id", id);
-		Usuario singleResult = (Usuario) query.getSingleResult();
-		session.close();
+		Usuario singleResult = null;
+		try {
+			singleResult = (Usuario) query.getSingleResult();
+		} catch (org.hibernate.NonUniqueResultException e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			session.close();
+		}
 		return singleResult;
 	}
 
 	public Usuario buscarComPerfis(String login) {
 		//new Usuario().getUsuarioPerfis().get(0).getPerfil()
 		Usuario singleResult;
+		Session session = null;
 		try {
-			Session session = getSession();
+			session = getSession();
 			Query query = session.getNamedQuery("Usuario.getUsuarioComPerfisPorLogin");
 			query.setParameter("login", login);
 			singleResult = (Usuario) query.getSingleResult();
-			session.close();
-		} catch (NoResultException e) {
+		} catch (NonUniqueResultException | NoResultException e) {
 			return null;
+		}finally {
+			session.close();
 		}
 		return singleResult;
 	}

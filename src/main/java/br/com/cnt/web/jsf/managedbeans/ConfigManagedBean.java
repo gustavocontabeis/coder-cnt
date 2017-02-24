@@ -26,7 +26,7 @@ public class ConfigManagedBean extends BaseManagedBean {
 		menu.add(new String[]{});
 		menu.add(new String[]{});
 		//template = "desktop";
-		template = "desktop-2";
+		template = "layout-2";
 		//template = "layout-classic";
 	}
 

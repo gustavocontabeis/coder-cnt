@@ -71,9 +71,8 @@
 					<p:outputLabel for="template" value="Layout" />
 					<p:selectOneButton id="template" value="#{loginManagedBean.template}">
 						<p:ajax event="change" update="@all" immediate="true" />
-						<f:selectItem itemLabel="Menu lateral" itemValue="desktop-2" />
-						<f:selectItem itemLabel="Menu superior" itemValue="desktop" />
-						<f:selectItem itemLabel="Mobile" itemValue="mobile" />
+						<f:selectItem itemLabel="Menu Superior" itemValue="layout-1" />
+						<f:selectItem itemLabel="Menu Esquerdo" itemValue="layout-2" />
 					</p:selectOneButton>
 					
 					<p:column />
