@@ -116,7 +116,7 @@ public class ContaDAO extends BaseDAO<Conta> {
 		
 		Map<String, Object> params = new HashMap<>();
 		
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(); 
 		sb.append("select obj from Conta obj ");
 		sb.append("left join obj.empresa emp ");
 		sb.append("left join obj.planoContas pc ");

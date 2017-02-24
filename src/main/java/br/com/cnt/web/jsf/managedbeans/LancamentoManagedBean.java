@@ -120,7 +120,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	public List<Conta> buscarConta(String param) {
 		if (StringUtils.isNotBlank(param)) {
 			List<Conta> buscar2 = contaDAO.buscar(this.loginBean.getExercicio(), param);
-			return buscar2;
+			return buscar2; 
 		}
 		return new ArrayList<Conta>();
 	}
