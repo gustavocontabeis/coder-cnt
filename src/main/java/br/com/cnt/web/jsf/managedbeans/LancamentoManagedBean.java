@@ -79,7 +79,7 @@ public class LancamentoManagedBean extends BaseManagedBean {
 
 	public void listener(ComponentSystemEvent evt) throws AbortProcessingException {
 		if (id != null) {
-			try {
+			try { 
 				lancamento = dao.buscar(new Long(id));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
