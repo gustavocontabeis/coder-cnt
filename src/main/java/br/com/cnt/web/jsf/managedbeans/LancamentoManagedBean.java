@@ -118,20 +118,8 @@ public class LancamentoManagedBean extends BaseManagedBean {
 	}
 
 	public List<Conta> buscarConta(String param) {
-		Map<String, Object> filters = new HashMap<String, Object>();
 		if (StringUtils.isNotBlank(param)) {
-
-			if (param.length() >= 2 && param.substring(0, 2).matches("\\d\\.")) {
-				filters.put("estrutura", param + "%");
-			} else if (param.matches("\\d*.?")) {
-				filters.put("id", new Long(param));
-			} else if (param.matches("\\d\\.\\d\\.\\d\\.\\d{2}\\.\\d{2}\\.\\d{2}\\.\\d{2}")) {
-				filters.put("estrutura", param);
-			} else {
-				filters.put("nome", param);
-			}
-			filters.put("contaTipo", ContaTipo.ANALITICA);
-			List<Conta> buscar2 = contaDAO.buscar2(new Filtro<Conta>(Conta.class, 0, 100, null, null, filters));
+			List<Conta> buscar2 = contaDAO.buscar(this.loginBean.getExercicio(), param);
 			return buscar2;
 		}
 		return new ArrayList<Conta>();

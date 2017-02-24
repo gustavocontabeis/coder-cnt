@@ -1,22 +1,8 @@
 package br.com.cnt.model.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
-import javax.validation.constraints.NotNull;
-
-import br.com.cnt.model.entity.usuarios.Usuario;
 
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {

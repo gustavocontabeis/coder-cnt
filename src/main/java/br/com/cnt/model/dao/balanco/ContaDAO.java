@@ -3,6 +3,7 @@ package br.com.cnt.model.dao.balanco;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -107,6 +108,45 @@ public class ContaDAO extends BaseDAO<Conta> {
 	public List<Conta> buscarTodos() {
 		Session session = getSession();
 		List list = session.createCriteria(Conta.class).list();
+		session.close();
+		return list;
+	}
+
+	public List<Conta> buscar(Exercicio exercicio, String param) {
+		
+		Map<String, Object> params = new HashMap<>();
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select obj from Conta obj ");
+		sb.append("left join obj.empresa emp ");
+		sb.append("left join obj.planoContas pc ");
+		sb.append("where 1=1 ");
+		
+		if (param.length() >= 2 && param.substring(0, 2).matches("\\d\\.")) {
+			params.put("estrutura", param + "%");
+			sb.append(" and estrutura like :estrutura");
+		} else if (param.matches("\\d*.?")) {
+			params.put("id", new Long(param));
+			sb.append(" and id = :id");
+		} else {
+			params.put("nome", '%'+param.toUpperCase()+'%');
+			sb.append(" and upper(nome) like :nome");
+		}
+		
+		params.put("contaTipo", ContaTipo.ANALITICA);
+		sb.append(" and obj.contaTipo = :contaTipo ");
+		
+		params.put("empresa", exercicio.getEmpresa().getId());
+		params.put("planoContas", exercicio.getPlanoContas().getId());
+		sb.append(" and (obj.empresa.id = :empresa or obj.planoContas.id = :planoContas)");
+	
+		Session session = getSession();
+		Query query = session.createQuery(sb.toString());
+		Set<String> keySet = params.keySet();
+		for (String key : keySet) {
+			query.setParameter(key, params.get(key));
+		}
+		List list = query.list();
 		session.close();
 		return list;
 	}

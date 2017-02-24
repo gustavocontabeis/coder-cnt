@@ -56,28 +56,25 @@
 							
 							<p:ajax event="change" update="@all" listener="#{loginManagedBean.selecionarPeriodo}" />
 						</p:selectOneMenu>
-
-						<span style="margin-left: 10px;">
-							<h:outputFormat value="Período de {0, date} até {1, date}">
-								<f:param value="#{loginManagedBean.de}" />
-								<f:param value="#{loginManagedBean.ate}" />
-							</h:outputFormat>
-						</span>
+						
+						<h:panelGroup rendered="#{not empty loginManagedBean.de and not empty loginManagedBean.ate}">
+							<span style="margin-left: 10px;">
+								<h:outputFormat value="Período de {0, date} até {1, date}">
+									<f:param value="#{loginManagedBean.de}" />
+									<f:param value="#{loginManagedBean.ate}" />
+								</h:outputFormat>
+							</span>
+						</h:panelGroup>
 						
 					</p:column>
 					
-					
 					<p:outputLabel for="template" value="Layout" />
 					<p:selectOneButton id="template" value="#{loginManagedBean.template}">
-							<p:ajax event="change" update="@all" immediate="true" />
-							<f:selectItem itemLabel="Desktop" itemValue="desktop" />
-							<f:selectItem itemLabel="Classic" itemValue="desktop-2" />
-							<f:selectItem itemLabel="Mobile" itemValue="mobile" />
+						<p:ajax event="change" update="@all" immediate="true" />
+						<f:selectItem itemLabel="Menu lateral" itemValue="desktop-2" />
+						<f:selectItem itemLabel="Menu superior" itemValue="desktop" />
+						<f:selectItem itemLabel="Mobile" itemValue="mobile" />
 					</p:selectOneButton>
-					
-					
-					
-					
 					
 					<p:column />
 					
