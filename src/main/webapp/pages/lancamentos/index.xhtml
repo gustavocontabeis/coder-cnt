@@ -193,12 +193,23 @@
 		</h:form>
 		<script type="text/javascript">
 			$('#lancamento-historico').keypress(function(event) {
-				console.log('key! '+event.which);
+				//console.log('key! '+event.which);
 				  if (event.which == 0) {
-					console.log('tab!');
+					//console.log('tab!');
 				    event.preventDefault();
 				    this.value = this.value + "\n";
-				    console.log(this.value.indexOf('_'));
+				    //console.log(this.value.indexOf('_'));
+				    var indexOf = this.value.indexOf('_');
+				    //console.log("indexOf", indexOf);
+				    var pos = indexOf;
+				    if(indexOf != -1){
+				    	while(this.value.charAt(pos) === '_'){
+				    		pos++;
+				    	} 
+				    	//console.log("pos", pos);
+					}
+				    this.selectionStart = indexOf;
+				    this.selectionEnd = pos;
 				  }
 			});
 		</script>
