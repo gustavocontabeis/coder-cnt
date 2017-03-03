@@ -7,10 +7,15 @@ import br.com.cnt.model.entity.BaseEntity;
 
 public class JSONUtil {
 	
-	private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private static Gson gson;
+	
+	static{
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat("dd/MM/yyyy");
+		gson = gsonBuilder.setPrettyPrinting().create();
+	}
 
 	public static String toJSON(BaseEntity imovel) {
-		gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(imovel);
 	}
 

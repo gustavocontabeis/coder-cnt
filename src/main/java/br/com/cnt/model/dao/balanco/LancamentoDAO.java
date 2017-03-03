@@ -27,7 +27,7 @@ import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
 import br.com.cnt.model.entity.balanco.dto.SaldoRazao;
 import br.com.cnt.model.utils.ContaUtil;
 
-@Named
+@javax.inject.Named @javax.faces.view.ViewScoped
 public class LancamentoDAO extends BaseDAO<Lancamento> {
 	
  	private static final long serialVersionUID = 1L;
@@ -249,23 +249,23 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		for (int nivel = 6; nivel > 0; nivel--) {
 			LOGGER.debug("Calculando todos os de nivel "+nivel);
 			List<SaldoContabil> saldosNivel = retornarSaldosContabeisDoNivel(saldosContabeis, nivel);
-			LOGGER.debug("Foram encontrados %d contas no nível %d.",saldosNivel.size(), nivel);
+			LOGGER.debug("Foram encontrados {} contas no nível {}.",saldosNivel.size(), nivel);
 			for (SaldoContabil saldoContabil : saldosNivel) {
 				List<SaldoContabil> filhos = retornarSaldosNivelInferior(saldosContabeis, saldoContabil);
 				if(filhos.size()>0){
-					LOGGER.debug(String.format("   Calculando: %s-%s (%d contas)\n", saldoContabil.getConta().getEstrutura(), saldoContabil.getConta().getNome(), filhos.size()));
+					LOGGER.debug(String.format("   Calculando:  %s-%s (%d contas)", saldoContabil.getConta().getEstrutura(), saldoContabil.getConta().getNome(), filhos.size()));
 					SaldoContabil total = retornarSoma(filhos);
 					saldoContabil.setSaldoInicial(total.getSaldoInicial());
 					saldoContabil.setDebito(total.getDebito());
 					saldoContabil.setCredito(total.getCredito());
 					saldoContabil.setSaldoFinal(total.getSaldoFinal());
-					LOGGER.debug(String.format("Valor da conta: %s-%s (%s - %s - %s - %s)\n", 
+					LOGGER.debug(String.format("Valor da conta: %s-%-50s (%s - %s - %s - %s)", 
 							saldoContabil.getConta().getEstrutura(), 
 							saldoContabil.getConta().getNome(), 
-							saldoContabil.getSaldoInicial(), 
-							saldoContabil.getDebito(), 
-							saldoContabil.getCredito(), 
-							saldoContabil.getSaldoFinal()
+							saldoContabil.getSaldoInicial().floatValue(), 
+							saldoContabil.getDebito().floatValue(), 
+							saldoContabil.getCredito().floatValue(), 
+							saldoContabil.getSaldoFinal().floatValue()
 					));
 				}else{
 					System.out.printf("Conta %s-%s não possui filhos\n", saldoContabil.getConta().getEstrutura(), saldoContabil.getConta().getNome(), filhos.size());				
@@ -336,7 +336,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		SaldoContabil soma = new SaldoContabil();
 		inicializarNulos(soma);
 		for (SaldoContabil saldoContabil : filhos) {
-			LOGGER.debug(String.format("             ->%s-%s (%s - %s - %s - %s)\n", 
+			LOGGER.debug(String.format("              ->%s-%-50s (%s - %s - %s - %s)", 
 					saldoContabil.getConta().getEstrutura(), 
 					saldoContabil.getConta().getNome(), 
 					saldoContabil.getSaldoInicial().floatValue(), 

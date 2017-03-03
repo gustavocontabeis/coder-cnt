@@ -14,7 +14,7 @@ import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.Balancete;
 import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
 
-@Named
+@javax.inject.Named @javax.faces.view.ViewScoped
 public class BalanceteDAO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -22,13 +22,14 @@ public class BalanceteDAO implements Serializable {
 	@Inject private LancamentoDAO daoLancamentos;
 	@Inject private ExercicioDAO daoExercicio;
 	
+	public BalanceteDAO() {
+	}
+	
 	public BalanceteDAO(LancamentoDAO daoLancamentos, ExercicioDAO daoExercicio) {
 		super();
 		this.daoLancamentos = daoLancamentos;
 		this.daoExercicio = daoExercicio;
 	}
-
-
 
 	public Balancete buscarBalancete(Exercicio exercicio, Date de , Date ate) throws DaoException{
 		

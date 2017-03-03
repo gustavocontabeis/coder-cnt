@@ -69,4 +69,14 @@ public class ContaUtil {
 		return 0;
 	}
 
+	public static boolean isFilho(Conta conta1, Conta conta2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean isPai(Conta conta, Conta conta2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -31,8 +31,13 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	
 	private Balancete balancete;
 	
-	//@Inject 
+	@Inject 
 	private BalanceteDAO dao;
+	
+	@Inject
+	private LancamentoDAO lancamentoDAO;
+	@Inject
+	private ExercicioDAO exercicioDAO;
 	
 	@PostConstruct
 	private void init() {
@@ -53,7 +58,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		Date ate = loginBean.getAte();
 		
 		try {
-			dao = new BalanceteDAO(new LancamentoDAO(), new ExercicioDAO());
+			dao = new BalanceteDAO(lancamentoDAO, exercicioDAO);
 			this.balancete = dao.buscarBalancete(exercicio, de, ate);
 		} catch (DaoException e) {
 			e.printStackTrace();

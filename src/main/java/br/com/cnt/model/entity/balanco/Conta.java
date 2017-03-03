@@ -37,7 +37,7 @@ import br.com.cnt.model.utils.ContaUtil;
 						+ "left join fetch obj.empresa e "
 						+ "left join fetch obj.planoContas pc "
 						+ "where obj.id = :id")})
-public class Conta extends BaseEntity {
+public class Conta extends BaseEntity implements Comparable<Conta>{
 	
 	private static final long serialVersionUID = 1L;
  	
@@ -150,6 +150,19 @@ public class Conta extends BaseEntity {
 	}
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
+	}
+
+	@Override
+	public int compareTo(Conta conta) {
+		return ContaUtil.compararNivel(this, conta);
+	}
+	
+	public boolean isPai(Conta conta){
+		return ContaUtil.isPai(this, conta);
+	}
+	
+	public boolean isFilho(Conta conta){
+		return ContaUtil.isFilho(this, conta);
 	}
 	
 }

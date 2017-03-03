@@ -11,7 +11,7 @@ import br.com.cnt.model.dao.BaseDAO;
 import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
 
-@Named
+@javax.inject.Named @javax.faces.view.ViewScoped
 public class ExercicioDAO extends BaseDAO<Exercicio> {
  	private static final long serialVersionUID = 1L;
  	
